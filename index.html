@@ -2978,7 +2978,7 @@ if (hasG && !reduce) {
   ScrollTrigger.create({ trigger: '#gia-dinh', start: 'top 60%', endTrigger: 'main', end: 'bottom bottom', onUpdate: st => { prog.style.transform = 'scaleX(' + st.progress.toFixed(4) + ')'; } });
   // 3 · câu đếm ngược trồi lên từng dòng
   gsap.from('#cdBig .ln>span', { yPercent: 105, duration: 1.1, ease: 'power3.out', stagger: .12, scrollTrigger: { trigger: '#cdBig', start: 'top 80%' } });
-  // 7 · kết trang: cô dâu nghiêng sang hôn chú rể, tim bật lên, rồi hai người tách ra
+  // 7 · kết trang: cô dâu nghiêng sang hôn chú rể, tim bật lên, giữ nguyên tư thế hôn
   (() => {
     const svg = document.querySelector('.end .sketch'), orig = document.getElementById('cplOrig');
     if (!svg || !orig) return;
@@ -3007,9 +3007,7 @@ if (hasG && !reduce) {
         .to(gB, { rotation: 2.6, x: 1.2, svgOrigin: oB, duration: .9, ease: 'power2.inOut' }, .3)
         .to(gG, { rotation: -1.2, x: -.5, svgOrigin: oG, duration: .9, ease: 'power2.inOut' }, .38)
         .to(hg, { opacity: 1, scale: 1, y: -14, duration: .6, ease: 'back.out(2.2)' }, 1.1)
-        .to(hg, { opacity: 0, y: -30, duration: .6, ease: 'power1.in' }, 2.2)
-        .to(gB, { rotation: 0, x: -11, svgOrigin: oB, duration: 1.3, ease: 'expo.out' }, 2.4)
-        .to(gG, { rotation: 0, x: 11, svgOrigin: oG, duration: 1.3, ease: 'expo.out' }, 2.4);
+        .to(hg, { opacity: 0, y: -30, duration: .6, ease: 'power1.in' }, 2.2);   // giữ tư thế hôn, không tách ra (Hailee 23/10)
     };
     new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { if (!tl) tl = build(); window.__kiss = tl; tl && tl.restart(); }
