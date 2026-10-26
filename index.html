@@ -1139,7 +1139,6 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           <g clip-path="url(#slotClip)"><g id="slotEnv" style="visibility:hidden" stroke="none" fill="#000"><use href="#airEnv" x="98" y="40" width="64" height="40"/></g></g>
           <path id="slotLip" d="M94 88 H166" stroke-width="1.6"/>
         </svg>
-        <p class="cap" id="chestCap">Hòm thư cưới</p>
       </div>
     </div>
   </div>
@@ -1478,7 +1477,7 @@ $$('textarea[data-maxw]').forEach(t => {
   const ring2 = $('#ring2'), RL = 2 * Math.PI * 27; ring2.style.strokeDasharray = RL; ring2.style.strokeDashoffset = RL;
   // cả 2 bản: không QR, khách gửi lời chúc → lá thư bay vào hòm + lưu vào Google Sheet (chị Phương 26/10)
   const wf = $('#wishForm');
-  if (wf) $('#wagain').addEventListener('click', () => { $('#wthx').hidden = true; wf.hidden = false; wf.closest('.wish-row').classList.remove('thx-on'); cap.textContent = 'Hòm thư cưới'; wf.wmsg.focus(); });
+  if (wf) $('#wagain').addEventListener('click', () => { $('#wthx').hidden = true; wf.hidden = false; wf.closest('.wish-row').classList.remove('thx-on'); wf.wmsg.focus(); });
   if (wf) wf.addEventListener('submit', e => {
     e.preventDefault();
     const nm = wf.wname.value.trim(), msg = wf.wmsg.value.trim();
@@ -1488,10 +1487,10 @@ $$('textarea[data-maxw]').forEach(t => {
       body: JSON.stringify({ side: 'Nhà gái', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
     const btn = wf.querySelector('button'), thx = $('#wthx');
     // gửi xong: ô lời chúc nhường chỗ cho ảnh 2 bé hồi nhỏ cảm ơn (chị Phương 26/10)
-    const finish = () => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; btn.disabled = false; wf.wmsg.value = ''; wf.wmsg.dispatchEvent(new Event('input'));
+    const finish = () => { btn.disabled = false; wf.wmsg.value = ''; wf.wmsg.dispatchEvent(new Event('input'));
       wf.hidden = true; thx.hidden = false; wf.closest('.wish-row').classList.add('thx-on'); if (hasG && !reduce) { gsap.fromTo(thx, { opacity: 0 }, { opacity: 1, duration: .5 }); gsap.from('#wthx .wph.a', { x: 60, y: 30, rotation: 8, opacity: 0, duration: 1, ease: 'expo.out' }); gsap.from('#wthx .wph.b', { x: -60, y: 30, rotation: -8, opacity: 0, duration: 1, ease: 'expo.out', delay: .12 }); } };
     if (!hasG || reduce) { finish(); return; }
-    btn.disabled = true; done.hidden = true;
+    btn.disabled = true;
     const r = wf.wmsg.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect();
     const k = bx.width / 260, W0 = 120;
     const s0 = Math.min(r.width * .6, 220) / W0, x0 = r.left + r.width / 2 - W0 * s0 / 2, y0 = r.top + r.height / 2 - 75 * s0 / 2;
@@ -1502,18 +1501,17 @@ $$('textarea[data-maxw]').forEach(t => {
       const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * (cy + 20) + t * t * y1;
       gsap.set(fe, { x, y, scale: s0 + (s1 - s0) * t, rotation: Math.sin(t * Math.PI * 2.2) * 9 * (1 - t) + (x1 > x0 ? -6 : 6) * Math.sin(t * Math.PI), '--sh': (.25 * Math.min(1, (1 - t) / .3)).toFixed(3) }); };
     gsap.set(slotEnv, { y: 0, visibility: 'hidden' }); place();
-    gsap.timeline({ onComplete: () => gsap.to('#chest', { opacity: 0, y: 10, duration: .45, ease: 'power2.in', onComplete: () => { gsap.set('#chest', { clearProps: 'opacity,transform' }); finish(); } }) })
+    gsap.timeline({ onComplete: finish })
       .fromTo(fe, { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 0)
       .to(P, { t: 1, duration: 1.35, ease: 'power2.inOut', onUpdate: place }, .2)
       .add(() => { gsap.set(fe, { opacity: 0 }); gsap.set(slotEnv, { visibility: 'visible', y: 0 }); }, 1.55)
       .to(slotEnv, { y: 6, duration: .18, ease: 'power1.out' }, 1.57)
       .to(slotEnv, { y: 46, duration: .5, ease: 'power3.in' }, 1.75)
-      .to('#chest svg', { scaleY: .988, scaleX: 1.006, transformOrigin: '50% 95%', duration: .26, ease: 'sine.out' }, 2.15)
-      .to('#chest svg', { scaleY: 1, scaleX: 1, duration: .6, ease: 'sine.inOut' }, 2.41)
-      .set(ring2, { opacity: .55 }, 2.25).fromTo(ring2, { strokeDashoffset: RL }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 2.25)
-      .to(cap, { opacity: 0, duration: .25 }, 2.3)
-      .add(() => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; gsap.set(slotEnv, { visibility: 'hidden' }); }, 2.55)
-      .fromTo(cap, { opacity: 0, clipPath: 'inset(-30% 100% -30% -5%)' }, { opacity: 1, clipPath: 'inset(-30% -5% -30% -5%)', duration: 1.1, ease: 'power1.inOut' }, 2.55);
+      .add(() => gsap.set(slotEnv, { visibility: 'hidden' }), 2.25)
+      // thư vào rồi hòm xoay tròn một vòng, thu nhỏ mờ đi nhường chỗ cho ảnh cảm ơn (Hailee 26/10)
+      .to('#chest svg', { rotation: 360, duration: 1, ease: 'power2.inOut', transformOrigin: '50% 55%' }, 2.2)
+      .to('#chest', { scale: .85, opacity: 0, duration: .4, ease: 'power2.in' }, 3)
+      .add(() => gsap.set(['#chest', '#chest svg'], { clearProps: 'transform,opacity' }), 3.45);
   });
   $$('.gift .sent').forEach(btn => btn.addEventListener('click', () => {
     const f = btn.closest('.col').querySelector('.flip');
