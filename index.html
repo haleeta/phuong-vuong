@@ -2694,31 +2694,28 @@ function measure() {
   focus.zoom = Math.min(innerWidth * .92 / s.width, innerHeight * .62 / s.height, innerWidth > 800 ? 1.9 : 9);
 }
 let target = 0, cur = -1;
-// thiệp tự chạy (không cần cuộn): vẽ tranh → lùi máy quay → chữ → tên lớn, ~7 giây; cuộn/chạm thì tua nhanh cho xong
+// thiệp tự chạy (không cần cuộn): tranh + chữ + tên lớn cùng 1 nhịp ~3.4 giây; cuộn/chạm thì tua nhanh cho xong
 let auto = null;
 function progress() {
   if (!auto) return 0;
   return auto.p0 + (1 - auto.p0) * clamp((performance.now() - auto.t0) / auto.dur);
 }
-window.__playStage = onDone => { auto = { p0: 0, t0: performance.now(), dur: 7000, onDone }; };
+window.__playStage = onDone => { auto = { p0: 0, t0: performance.now(), dur: 3400, onDone }; };
 window.__speedStage = () => { if (!auto || auto.done) return; const p = progress(); if (auto.dur > 900) auto = { ...auto, p0: p, t0: performance.now(), dur: 900 }; };
 function render(p) {
-  // 0 → .62: vẽ tranh (máy quay sát giấy); .55 → .78: lùi máy quay; .66 → .9: chữ hiện dần; .8 → .95: tên lớn
-  draw(seg(p, .02, .62));
-  const pull = ease(seg(p, .55, .8));
-  const z = focus.zoom + (1 - focus.zoom) * pull;
-  cam.style.transform = `translate(${-focus.x * z * (1 - pull)}px, ${-focus.y * z * (1 - pull)}px) scale(${z})`;
+  // 1 nhịp (Hailee 26/10: intro dài, ghép tranh + chữ chung): thiệp hiện đủ khung, tranh tự vẽ CÙNG LÚC chữ hiện dần và tên lớn trượt vào
+  draw(seg(p, 0, .85));
+  const pull = 1 - .04 * (1 - ease(seg(p, 0, .8)));  // máy quay chỉ lùi nhẹ 4% cho có hơi thở, không zoom sát giấy
+  cam.style.transform = `scale(${pull})`;
   txs.forEach((el, i) => {
-    const k = ease(seg(p, .64 + i * .018, .72 + i * .018));
+    const a = .06 + i * (.6 / Math.max(1, txs.length)), k = ease(seg(p, a, a + .22));
     el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 10}px)`;
   });
-  const gk = ease(seg(p, .8, .94));
+  const gk = ease(seg(p, .25, .75));
   gl.style.opacity = gk; gl.style.transform = `translate(${(1 - gk) * -40}px,-50%)`;
   gr.style.opacity = gk; gr.style.transform = `translate(${(1 - gk) * 40}px,-50%)`;
-  hint.style.opacity = seg(p, .96, 1);  // thiệp tự chạy xong mới hiện "Cuộn để xem tiếp"
-  const d = Math.round(seg(p, .02, .62) * 100);
-  meter.textContent = d < 100 ? 'đang vẽ thiệp… ' + d + '%' : 'Trân trọng kính mời';
-  meter.style.opacity = p > .94 || p < .02 ? 0 : 1; meter.style.color = pull < .5 ? 'var(--ink)' : 'rgba(242,236,225,.75)';
+  hint.style.opacity = seg(p, .95, 1);  // thiệp tự chạy xong mới hiện "Cuộn để xem tiếp"
+  meter.style.opacity = 0;
 }
 function loop() {
   target = progress();
