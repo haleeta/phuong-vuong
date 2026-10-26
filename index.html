@@ -290,8 +290,8 @@ button{font:inherit}
 .wthx{margin:0 auto;width:min(480px,100%);text-align:center}
 .wthx .wpair{display:flex;justify-content:center;gap:2%;padding-top:6px}
 .wthx .wph{flex:0 0 49%;aspect-ratio:1/1.12;padding:7px 7px 22px;background:#fffdf9;box-shadow:0 1px 0 rgba(110,26,31,.08),0 18px 40px -18px rgba(60,10,12,.4)}
-.wthx .wph.a{transform:rotate(-3.5deg)}
-.wthx .wph.b{transform:rotate(3deg) translateY(14px)}
+.wthx .wph.a{rotate:-3.5deg}
+.wthx .wph.b{rotate:3deg;margin-top:14px}
 .wthx img{display:block;width:100%;height:100%;object-fit:cover}
 .wthx figcaption{margin-top:14px;font-family:var(--display);font-style:italic;font-size:20px;color:var(--wine)}
 .wthx .sq{margin-top:12px}
@@ -368,7 +368,7 @@ button{font:inherit}
 .end p.thx{margin-top:6px}
 .album .bar{margin-top:0;gap:16px}
 .album .ctl span{white-space:nowrap}
-@media (max-width:520px){.album .bar .eyebrow{display:none}.album .bar{justify-content:flex-end}}
+@media (max-width:520px){.album .bar .eyebrow{display:none}.album .bar{justify-content:center}}
 
 /* đếm ngược theo cách thiệp in ngày: số mảnh đứng thẳng, nhãn chữ hoa, kẻ mảnh */
 .cdrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:860px;margin:34px auto 0;border-top:1px solid rgba(110,26,31,.35);border-bottom:1px solid rgba(110,26,31,.35)}
@@ -1487,8 +1487,18 @@ $$('textarea[data-maxw]').forEach(t => {
       body: JSON.stringify({ side: 'Nhà gái', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
     const btn = wf.querySelector('button'), thx = $('#wthx');
     // gửi xong: ô lời chúc nhường chỗ cho ảnh 2 bé hồi nhỏ cảm ơn (chị Phương 26/10)
+    // gửi xong: form + hòm cùng mờ hết rồi mới đổi bố cục, trang trôi êm tới ảnh, 2 ảnh nổi lên lần lượt (Hailee 26/10: nối chưa mượt)
     const finish = () => { btn.disabled = false; wf.wmsg.value = ''; wf.wmsg.dispatchEvent(new Event('input'));
-      wf.hidden = true; thx.hidden = false; wf.closest('.wish-row').classList.add('thx-on'); if (hasG && !reduce) { gsap.fromTo(thx, { opacity: 0 }, { opacity: 1, duration: .5 }); gsap.from('#wthx .wph.a', { x: 60, y: 30, rotation: 8, opacity: 0, duration: 1, ease: 'expo.out' }); gsap.from('#wthx .wph.b', { x: -60, y: 30, rotation: -8, opacity: 0, duration: 1, ease: 'expo.out', delay: .12 }); } };
+      const row = wf.closest('.wish-row');
+      wf.hidden = true; thx.hidden = false; row.classList.add('thx-on');
+      if (!hasG || reduce) return;
+      gsap.set(['#chest', wf], { clearProps: 'opacity,transform' });
+      ScrollTrigger.refresh();
+      // đưa 2 ảnh vào giữa màn cùng lúc chúng hiện ra (không để khách nhìn khoảng trống)
+      const tr = thx.getBoundingClientRect(), dy = tr.top + tr.height / 2 - innerHeight / 2;
+      if (Math.abs(dy) > 40) { if (lenis) lenis.scrollTo(scrollY + dy, { duration: .9, easing: t => 1 - Math.pow(1 - t, 3) }); else scrollTo({ top: scrollY + dy, behavior: 'smooth' }); }
+      gsap.fromTo('#wthx .wph', { opacity: 0, y: 28, scale: .94 }, { opacity: 1, y: 0, scale: 1, duration: .9, ease: 'expo.out', stagger: .14, delay: .1 });
+      gsap.fromTo('#wthx figcaption, #wthx .sq', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .7, ease: 'power3.out', stagger: .08, delay: .45 }); };
     if (!hasG || reduce) { finish(); return; }
     btn.disabled = true;
     // đóng bàn phím điện thoại trước rồi mới bay; điểm đầu/cuối tính lại mỗi khung theo vị trí thật (trang có xê dịch vẫn trúng hòm)
@@ -1513,8 +1523,8 @@ $$('textarea[data-maxw]').forEach(t => {
       .add(() => gsap.set(slotEnv, { visibility: 'hidden' }), 2.4)
       // thư vào: hòm rung nhẹ một cái rồi mờ dần, nhường chỗ cho ảnh cảm ơn (Hailee 26/10: nhẹ thôi, không xoay)
       .to('#chest svg', { keyframes: [{ rotation: -2.5, duration: .12 }, { rotation: 2, duration: .14 }, { rotation: 0, duration: .2 }], transformOrigin: '50% 95%', ease: 'sine.inOut' }, 2.3)
-      .to('#chest', { opacity: 0, duration: .6, ease: 'power1.inOut' }, 2.85)
-      .add(() => gsap.set(['#chest', '#chest svg'], { clearProps: 'transform,opacity' }), 3.5);
+      .to(['#chest', wf], { opacity: 0, y: -8, duration: .5, ease: 'power2.in' }, 2.8)
+      .add(() => gsap.set('#chest svg', { clearProps: 'transform' }), 3.3);
   });
   $$('.gift .sent').forEach(btn => btn.addEventListener('click', () => {
     const f = btn.closest('.col').querySelector('.flip');
