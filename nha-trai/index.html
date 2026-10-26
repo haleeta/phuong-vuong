@@ -1109,10 +1109,10 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
       <div class="col rv">
         <p class="who">Chú rể</p>
         <div class="flip"><div class="fi">
-          <div class="fc front qr"><img loading="lazy" decoding="async" class="qrimg" src="assets/c959ea29f0.png" alt="Mã QR chuyển khoản Timo, Vu Mai Phuong, 9021977364494"></div>
+          <div class="fc front qr"><img loading="lazy" decoding="async" class="qrimg" src="assets/c959ea29f0.png" alt="Mã QR chuyển khoản mừng cưới chú rể"></div>
           <div class="fc back meme" aria-live="polite"><div class="mm"><img class="photo" src="assets/26c40143df.jpg" alt="Ảnh hồi nhỏ: chú rể cầm phong bì mừng cưới, cô dâu nghĩ: của anh cũng là của em" loading="lazy"></div><p class="t2">Cảm ơn Quý Khách nhiều nha!</p></div>
         </div></div>
-        <p class="bank">Timo by BVBank · Vu Mai Phuong</p><p class="acct">9021 977 364 494</p>
+        <p class="bank">Timo by BVBank</p><p class="acct">9021 977 364 494</p>
         <div class="gb"><button class="sq sm" type="button" data-copy="9021977364494">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
       </div>
       <div class="chest rv" id="chest" aria-hidden="true">
@@ -1151,7 +1151,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           <div class="fc front qr"><svg viewBox="0 0 29 29" aria-label="Mã QR mẫu" data-side="co-dau"></svg></div>
           <div class="fc back meme" aria-live="polite"><div class="mm"><img class="photo" src="assets/24aeb19c44.jpg" alt="Ảnh hồi nhỏ: cô dâu ôm phong bì mừng cưới, chú rể mếu: ơ, anh cũng muốn" loading="lazy"></div><p class="t2">Cảm ơn Quý Khách nhiều nha!</p></div>
         </div></div>
-        <p class="bank">Vietcombank · Vu Mai Phuong</p><p class="acct">0711 000 293 621</p>
+        <p class="bank">Vietcombank</p><p class="acct">0711 000 293 621</p>
         <div class="gb"><button class="sq sm" type="button" data-copy="0711000293621">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
       </div>
     </div>
@@ -1258,24 +1258,24 @@ function measure() {
   focus.zoom = Math.min(innerWidth * .92 / s.width, innerHeight * .62 / s.height, innerWidth > 800 ? 1.9 : 9);
 }
 let target = 0, cur = -1;
-// thiệp tự chạy (không cần cuộn): tranh + chữ + tên lớn cùng 1 nhịp ~3.4 giây; cuộn/chạm thì tua nhanh cho xong
+// thiệp tự chạy (không cần cuộn): tranh + chữ + tên lớn cùng 1 nhịp ~1.9 giây, nối liền nhịp mở phong bì; cuộn/chạm thì tua nhanh cho xong
 let auto = null;
 function progress() {
   if (!auto) return 0;
   return auto.p0 + (1 - auto.p0) * clamp((performance.now() - auto.t0) / auto.dur);
 }
-window.__playStage = onDone => { auto = { p0: 0, t0: performance.now(), dur: 3400, onDone }; };
+window.__playStage = onDone => { auto = { p0: 0, t0: performance.now(), dur: 1900, onDone }; };
 window.__speedStage = () => { if (!auto || auto.done) return; const p = progress(); if (auto.dur > 900) auto = { ...auto, p0: p, t0: performance.now(), dur: 900 }; };
 function render(p) {
   // 1 nhịp (Hailee 26/10: intro dài, ghép tranh + chữ chung): thiệp hiện đủ khung, tranh tự vẽ CÙNG LÚC chữ hiện dần và tên lớn trượt vào
-  draw(seg(p, 0, .85));
+  draw(seg(p, 0, .8));
   const pull = 1 - .04 * (1 - ease(seg(p, 0, .8)));  // máy quay chỉ lùi nhẹ 4% cho có hơi thở, không zoom sát giấy
   cam.style.transform = `scale(${pull})`;
   txs.forEach((el, i) => {
-    const a = .06 + i * (.6 / Math.max(1, txs.length)), k = ease(seg(p, a, a + .22));
+    const a = .02 + i * (.42 / Math.max(1, txs.length)), k = ease(seg(p, a, a + .2));
     el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 10}px)`;
   });
-  const gk = ease(seg(p, .25, .75));
+  const gk = ease(seg(p, .15, .6));
   gl.style.opacity = gk; gl.style.transform = `translate(${(1 - gk) * -40}px,-50%)`;
   gr.style.opacity = gk; gr.style.transform = `translate(${(1 - gk) * 40}px,-50%)`;
   hint.style.opacity = seg(p, .95, 1);  // thiệp tự chạy xong mới hiện "Cuộn để xem tiếp"
@@ -1705,7 +1705,7 @@ else {
     .to(card, { rotation: 0, duration: 1.2, ease: 'power2.inOut' }, 4.95)
     .to(rig, { rotationX: 0, duration: 1.2, ease: 'power2.inOut' }, 4.6)
     .to(rig, { y: () => 615.5 * s0 - innerHeight * .02, duration: 1.3, ease: 'power2.inOut' }, 4.6)
-    .to(rig, { scale: () => finals().S, x: () => finals().x, y: () => finals().y, duration: 1.6, ease: 'power2.inOut' }, 5.75)
+    .to(rig, { scale: () => finals().S, x: () => finals().x, y: () => finals().y, duration: 1.1, ease: 'power2.inOut' }, 5.75)
     .to(['#shA', '#shC'], { opacity: 0, duration: .6 }, 4.9)
     .to('#itable', { opacity: 0, duration: .6, ease: 'power1.inOut' }, 5.1)
     .to(introEl, { backgroundColor: 'rgba(30,3,3,0)', duration: .6, ease: 'power1.inOut' }, 5.1)
