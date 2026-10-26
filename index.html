@@ -2893,7 +2893,7 @@ form.addEventListener('submit', e => {
   $('#dSum').textContent = yes ? 'Hân hạnh tham dự · ' + (comp ? 'cùng ' + (cnt.value === '5' ? '5+' : comp) + ' người' : 'một mình') : 'Rất tiếc không thể đến, xin gửi lời chúc phúc';
   $('#dAtRow').hidden = !yes;
   // gửi hồi âm vào Google Sheet (Apps Script web app, URL ở rsvp-hook.txt)
-  const HOOK = '__RSVP_HOOK__';
+  const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
   if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ side: 'Nhà gái', name, go: yes ? 'Tham dự' : 'Không đến', comp: yes ? (cnt.value === '5' ? '5+' : String(comp)) : '', total: yes ? (cnt.value === '5' ? '6+' : String(n)) : '', wish }) }).catch(() => {});
   const open = () => { form.hidden = true; done.hidden = false; if (window.ScrollTrigger) ScrollTrigger.refresh(); bow(); };
