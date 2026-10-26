@@ -528,9 +528,9 @@ button{font:inherit}
 .reply.rc .rc-cnt .rc-lb{margin-top:0}
 .reply.rc .rc-n{width:calc(70*var(--u));height:calc(26*var(--u));padding:0;font:600 max(calc(18*var(--u)),16px)/1 var(--display);font-variant-numeric:lining-nums;-moz-appearance:textfield;appearance:textfield}
 .reply.rc .rc-n::-webkit-outer-spin-button,.reply.rc .rc-n::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.reply.rc .rc-wish{height:calc(56*var(--u));padding:0;border:0;resize:none;overflow:hidden;font:italic 400 max(calc(16*var(--u)),16px)/calc(28*var(--u)) var(--display);color:#5b3d3a;
+.reply.rc .rc-wish{--wlh:max(calc(28*var(--u)),27px);height:calc(56*var(--u));padding:0;border:0;resize:none;overflow:hidden;font:italic 400 max(calc(16*var(--u)),16px)/var(--wlh) var(--display);color:#5b3d3a;
   background:repeating-linear-gradient(transparent 0 calc(calc(28*var(--u)) - 1px),rgba(110,26,31,.3) calc(calc(28*var(--u)) - 1px) calc(28*var(--u)))}
-.reply.rc .rc-wish:focus{background:repeating-linear-gradient(transparent 0 calc(calc(28*var(--u)) - 1px),rgba(110,26,31,.6) calc(calc(28*var(--u)) - 1px) calc(28*var(--u)))}
+.reply.rc .rc-wish:focus{background:repeating-linear-gradient(transparent 0 calc(var(--wlh) - 1px),rgba(110,26,31,.6) calc(var(--wlh) - 1px) var(--wlh))}
 .reply.rc .rc-send{margin-top:calc(20*var(--u));padding:calc(9*var(--u)) calc(26*var(--u)) calc(8*var(--u)) calc(calc(26*var(--u)) + calc(4*var(--u)));border:0;background:var(--wine);color:#f9f6f0;font:600 max(calc(12.5*var(--u)),10px)/1.2 var(--display);letter-spacing:calc(4*var(--u));cursor:pointer}
 .reply.rc .rc-end{margin-top:calc(16*var(--u));font-size:max(calc(16*var(--u)),12px)}
 .reply.rc .rc-date{margin-top:calc(4*var(--u));padding-left:calc(4*var(--u));font:500 max(calc(12.5*var(--u)),9.5px)/1.3 var(--display);letter-spacing:calc(4*var(--u));color:var(--wine);white-space:nowrap}
@@ -664,6 +664,11 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 .reply.rc .qz-n input:focus-visible+span{outline:2px solid var(--gold);outline-offset:3px}
 .reply.rc .qz-wish{width:calc(320*var(--u));height:calc(84*var(--u));margin-top:calc(22*var(--u))}
 .reply.rc .qz-wish::placeholder{color:#c2b0a8}
+.reply.rc .qz-wish{flex-shrink:0}
+@media (max-width:520px){.reply.rc .qz-s[data-s="4"]:focus-within .qz-hi{display:none}}
+.wcount{margin-top:6px;font-family:var(--body);font-size:12px;letter-spacing:.04em;color:#a8948c;text-align:right}
+.wcount.full{color:var(--wine)}
+.reply.rc .wcount{width:calc(320*var(--u));margin-inline:auto;font-size:max(calc(11*var(--u)),11px)}
 .reply.rc .qz .rc-send{margin-top:calc(26*var(--u))}
 .reply.rc .qz-back{align-self:flex-start;border:0;background:none;padding:calc(4*var(--u)) 0;font:italic 400 max(calc(16*var(--u)),13px)/1 var(--display);color:#9a7f78;cursor:pointer}
 .reply.rc .qz .rc-date{margin-top:calc(14*var(--u))}
@@ -981,7 +986,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           <div class="qz-s" data-s="4">
             <p class="qz-hi">Cuối cùng,</p>
             <label class="qz-q" for="wish">Đôi lời gửi<br>cô dâu chú rể</label>
-            <textarea class="rc-line rc-wish qz-wish" id="wish" name="wish" rows="3" placeholder="Không bắt buộc"></textarea>
+            <textarea class="rc-line rc-wish qz-wish" id="wish" name="wish" rows="3" data-maxw="30" placeholder="Không bắt buộc"></textarea>
             <button class="rc-send" type="submit">GỬI HỒI ÂM</button>
           </div>
         </div>
@@ -995,7 +1000,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
         <p class="rc-cap">ĐÃ NHẬN HỒI ÂM CỦA</p>
         <p class="ty-name" id="dName"></p>
         <p class="rc-it ty-sum" id="dSum"></p>
-        <p class="rc-date" id="dAtRow"><span>CƠM THÂN MẬT 16:00 · 11.12</span><span class="rc-dot"> · </span><span>LỄ THÀNH HÔN 16:00 · 12.12</span></p>
+        <p class="rc-date" id="dAtRow"><span>CƠM THÂN MẬT 16:00 · 11.12</span><br><span>LỄ THÀNH HÔN 16:00 · 12.12</span></p>
         <p class="rc-it rc-end">Hẹn gặp Quý Khách ngày 11.12</p>
         <pre id="msg" class="sr"></pre>
       </div>
@@ -1119,7 +1124,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
         <label class="wl" for="wname">Quý danh</label>
         <input class="rc-line" id="wname" name="wname" autocomplete="name" placeholder="Họ và tên">
         <label class="wl" for="wmsg">Đôi lời gửi cô dâu chú rể</label>
-        <textarea class="rc-line" id="wmsg" name="wmsg" rows="4" placeholder="Lời chúc của Quý Khách"></textarea>
+        <textarea class="rc-line" id="wmsg" name="wmsg" rows="4" data-maxw="30" placeholder="Lời chúc của Quý Khách"></textarea>
         <button class="sq solid" type="submit">Gửi lời chúc</button>
         <p class="wdone" id="wdone" role="status" hidden>Lá thư đã vào hòm. Cảm ơn Quý Khách!</p>
       </form>
@@ -1464,6 +1469,18 @@ form.addEventListener('submit', e => {
   } });
 });
 })();
+
+/* ---------- lời chúc: tối đa 30 từ, ô tự giãn theo số dòng (Hailee 26/10: chữ dài bị cuộn mất, nên giới hạn số từ) ---------- */
+$$('textarea[data-maxw]').forEach(t => {
+  const N = +t.dataset.maxw, c = document.createElement('p'); c.className = 'wcount'; c.setAttribute('aria-live', 'polite'); t.after(c);
+  const fit = () => {
+    const w = t.value.match(/\S+/g) || [];
+    if (w.length > N) { const m = t.value.match(new RegExp('^\\s*(?:\\S+\\s+){' + (N - 1) + '}\\S+')); if (m) t.value = m[0]; }
+    const n = Math.min(N, w.length); c.textContent = n + ' / ' + N + ' từ'; c.classList.toggle('full', n >= N);
+    t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px';
+  };
+  t.addEventListener('input', fit); fit();
+});
 
 /* ---------- 6 · mừng cưới: QR thành phong bì bay vào hòm ---------- */
 (() => {
