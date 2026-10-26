@@ -572,6 +572,12 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 .ev .time{font-size:var(--t-num);font-weight:300;text-align:left;line-height:1;margin-bottom:6px;letter-spacing:-.01em}
 .ev canvas{margin-top:22px}
 .lunar{font-size:var(--t-note);padding-top:56px}
+.ev-one .slots{list-style:none;margin:40px 0 0;padding:0}
+.ev-one .slots li{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding:22px 0 18px;border-top:1px solid rgba(242,236,225,.14)}
+.ev-one .slots .time{font-size:clamp(44px,4.6vw,68px);margin:0;line-height:.9;text-align:right}
+.ev-one .slot-cal{display:inline-block;margin-top:6px;padding-block:8px;font-family:var(--body);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:#cdb6a9;text-decoration:underline;text-underline-offset:4px}
+.ev-one canvas{margin-top:0}
+.ev-one.no-art{grid-template-columns:minmax(0,560px)}
 @media (max-width:860px){.ev{grid-template-columns:1fr;gap:20px}}
 /* đếm ngược: câu mảnh, nhịp chậm */
 .cd .lunar2{font-size:var(--t-note)}
@@ -829,23 +835,17 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 <section class="sched" id="lich-trinh">
   <div class="wrap">
     <div class="shead rv"><p class="eyebrow">11 &amp; 12.12.2026</p><h2 class="script-h">Lịch trình ngày vui</h2></div>
-    <article class="ev">
+    <article class="ev ev-one no-art">
       <div class="rv">
-        <p class="kind">Cơm thân mật</p><p class="lab">Thứ Sáu · 11.12.2026</p>
         <p class="place">Tư gia<br>nhà trai</p>
         <p class="addr">164 Thôn Tiên Đài, Xã Nguyệt Đức, Tỉnh Phú Thọ</p>
-        <div class="acts"><a class="sq solid" target="_blank" rel="noopener" href="https://maps.app.goo.gl/c8UF8GD275agZofi9">Chỉ đường</a><a class="sq" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=C%C6%A1m+th%C3%A2n+m%E1%BA%ADt+m%E1%BB%ABng+L%E1%BB%85+Th%C3%A0nh+H%C3%B4n+Qu%E1%BB%91c+V%C6%B0%C6%A1ng+%26+Mai+Ph%C6%B0%C6%A1ng&amp;dates=20261211T090000Z%2F20261211T120000Z&amp;location=164+Th%C3%B4n+Ti%C3%AAn+%C4%90%C3%A0i%2C+X%C3%A3+Nguy%E1%BB%87t+%C4%90%E1%BB%A9c%2C+T%E1%BB%89nh+Ph%C3%BA+Th%E1%BB%8D">Lưu lịch</a></div>
+        <div class="acts"><a class="sq solid" target="_blank" rel="noopener" href="https://maps.app.goo.gl/c8UF8GD275agZofi9">Chỉ đường</a></div>
+        <ol class="slots">
+          <li><div><p class="kind">Cơm thân mật</p><p class="lab">Thứ Sáu · 11.12.2026</p><a class="slot-cal" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=C%C6%A1m+th%C3%A2n+m%E1%BA%ADt+m%E1%BB%ABng+L%E1%BB%85+Th%C3%A0nh+H%C3%B4n+Qu%E1%BB%91c+V%C6%B0%C6%A1ng+%26+Mai+Ph%C6%B0%C6%A1ng&amp;dates=20261211T090000Z%2F20261211T120000Z&amp;location=164+Th%C3%B4n+Ti%C3%AAn+%C4%90%C3%A0i%2C+X%C3%A3+Nguy%E1%BB%87t+%C4%90%E1%BB%A9c%2C+T%E1%BB%89nh+Ph%C3%BA+Th%E1%BB%8D">Lưu lịch</a></div><p class="time">16:00</p></li>
+          <li><div><p class="kind">Lễ Thành Hôn</p><p class="lab">Thứ Bảy · 12.12.2026</p><a class="slot-cal" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=L%E1%BB%85+Th%C3%A0nh+H%C3%B4n+Qu%E1%BB%91c+V%C6%B0%C6%A1ng+%26+Mai+Ph%C6%B0%C6%A1ng&amp;dates=20261212T090000Z%2F20261212T110000Z&amp;location=164+Th%C3%B4n+Ti%C3%AAn+%C4%90%C3%A0i%2C+X%C3%A3+Nguy%E1%BB%87t+%C4%90%E1%BB%A9c%2C+T%E1%BB%89nh+Ph%C3%BA+Th%E1%BB%8D">Lưu lịch</a></div><p class="time">16:00</p></li>
+        </ol>
       </div>
-      <div><p class="time">16:00</p></div>
-    </article>
-    <article class="ev">
-      <div class="rv">
-        <p class="kind">Lễ Thành Hôn</p><p class="lab">Thứ Bảy · 12.12.2026</p>
-        <p class="place">Tư gia<br>nhà trai</p>
-        <p class="addr">164 Thôn Tiên Đài, Xã Nguyệt Đức, Tỉnh Phú Thọ</p>
-        <div class="acts"><a class="sq solid" target="_blank" rel="noopener" href="https://maps.app.goo.gl/c8UF8GD275agZofi9">Chỉ đường</a><a class="sq" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=L%E1%BB%85+Th%C3%A0nh+H%C3%B4n+Qu%E1%BB%91c+V%C6%B0%C6%A1ng+%26+Mai+Ph%C6%B0%C6%A1ng&amp;dates=20261212T090000Z%2F20261212T110000Z&amp;location=164+Th%C3%B4n+Ti%C3%AAn+%C4%90%C3%A0i%2C+X%C3%A3+Nguy%E1%BB%87t+%C4%90%E1%BB%A9c%2C+T%E1%BB%89nh+Ph%C3%BA+Th%E1%BB%8D">Lưu lịch</a></div>
-      </div>
-      <div><p class="time">16:00</p></div>
+      
     </article>
     <p class="lunar rv">Nhằm ngày 03 và 04 tháng 11 năm Bính Ngọ</p>
   </div>
