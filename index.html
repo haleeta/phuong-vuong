@@ -1491,27 +1491,30 @@ $$('textarea[data-maxw]').forEach(t => {
       wf.hidden = true; thx.hidden = false; wf.closest('.wish-row').classList.add('thx-on'); if (hasG && !reduce) { gsap.fromTo(thx, { opacity: 0 }, { opacity: 1, duration: .5 }); gsap.from('#wthx .wph.a', { x: 60, y: 30, rotation: 8, opacity: 0, duration: 1, ease: 'expo.out' }); gsap.from('#wthx .wph.b', { x: -60, y: 30, rotation: -8, opacity: 0, duration: 1, ease: 'expo.out', delay: .12 }); } };
     if (!hasG || reduce) { finish(); return; }
     btn.disabled = true;
-    const r = wf.wmsg.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect();
-    const k = bx.width / 260, W0 = 120;
-    const s0 = Math.min(r.width * .6, 220) / W0, x0 = r.left + r.width / 2 - W0 * s0 / 2, y0 = r.top + r.height / 2 - 75 * s0 / 2;
-    const s1 = 64 * k / W0, x1 = bx.left + 98 * k, y1 = bx.top + 40 * k;
-    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - Math.max(140, Math.abs(x1 - x0) * .35);
-    const P = { t: 0 };
-    const place = () => { const t = P.t, u = 1 - t;
-      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * (cy + 20) + t * t * y1;
-      gsap.set(fe, { x, y, scale: s0 + (s1 - s0) * t, rotation: Math.sin(t * Math.PI * 2.2) * 9 * (1 - t) + (x1 > x0 ? -6 : 6) * Math.sin(t * Math.PI), '--sh': (.25 * Math.min(1, (1 - t) / .3)).toFixed(3) }); };
-    gsap.set(slotEnv, { y: 0, visibility: 'hidden' }); place();
-    gsap.timeline({ onComplete: finish })
+    // đóng bàn phím điện thoại trước rồi mới bay; điểm đầu/cuối tính lại mỗi khung theo vị trí thật (trang có xê dịch vẫn trúng hòm)
+    wf.wmsg.blur(); wf.wname.blur();
+    const W0 = 120, P = { t: 0 };
+    const ends = () => { const r = wf.wmsg.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect(), k = bx.width / 260;
+      const s0 = Math.min(r.width * .6, 220) / W0;
+      return { s0, x0: r.left + r.width / 2 - W0 * s0 / 2, y0: r.top + r.height / 2 - 75 * s0 / 2, s1: 64 * k / W0, x1: bx.left + 98 * k, y1: bx.top + 40 * k }; };
+    const place = () => { const e = ends(), t = P.t, u = 1 - t;
+      const cx = (e.x0 + e.x1) / 2, cy = Math.max(30, Math.min(e.y0, e.y1) - Math.max(90, Math.abs(e.x1 - e.x0) * .25));
+      const x = u * u * e.x0 + 2 * u * t * cx + t * t * e.x1, y = u * u * e.y0 + 2 * u * t * (cy + 20) + t * t * e.y1;
+      gsap.set(fe, { x, y, scale: e.s0 + (e.s1 - e.s0) * t, rotation: Math.sin(t * Math.PI * 2.2) * 9 * (1 - t) + (e.x1 > e.x0 ? -6 : 6) * Math.sin(t * Math.PI), '--sh': (.25 * Math.min(1, (1 - t) / .3)).toFixed(3) }); };
+    gsap.set(slotEnv, { y: 0, visibility: 'hidden' });
+    const ch = $('#chest'), cr = ch.getBoundingClientRect();
+    if (cr.bottom > innerHeight || cr.top < 0) { if (lenis) lenis.scrollTo(ch, { offset: -innerHeight * .35, duration: .6 }); else ch.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    gsap.timeline({ delay: .35, onComplete: finish, onStart: place })
       .fromTo(fe, { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 0)
-      .to(P, { t: 1, duration: 1.35, ease: 'power2.inOut', onUpdate: place }, .2)
-      .add(() => { gsap.set(fe, { opacity: 0 }); gsap.set(slotEnv, { visibility: 'visible', y: 0 }); }, 1.55)
-      .to(slotEnv, { y: 6, duration: .18, ease: 'power1.out' }, 1.57)
-      .to(slotEnv, { y: 46, duration: .5, ease: 'power3.in' }, 1.75)
-      .add(() => gsap.set(slotEnv, { visibility: 'hidden' }), 2.25)
-      // thư vào rồi hòm xoay tròn một vòng, thu nhỏ mờ đi nhường chỗ cho ảnh cảm ơn (Hailee 26/10)
-      .to('#chest svg', { rotation: 360, duration: 1, ease: 'power2.inOut', transformOrigin: '50% 55%' }, 2.2)
-      .to('#chest', { scale: .85, opacity: 0, duration: .4, ease: 'power2.in' }, 3)
-      .add(() => gsap.set(['#chest', '#chest svg'], { clearProps: 'transform,opacity' }), 3.45);
+      .to(P, { t: 1, duration: 1.5, ease: 'power2.inOut', onUpdate: place }, .2)
+      .add(() => { gsap.set(fe, { opacity: 0 }); gsap.set(slotEnv, { visibility: 'visible', y: 0 }); }, 1.7)
+      .to(slotEnv, { y: 6, duration: .18, ease: 'power1.out' }, 1.72)
+      .to(slotEnv, { y: 46, duration: .5, ease: 'power3.in' }, 1.9)
+      .add(() => gsap.set(slotEnv, { visibility: 'hidden' }), 2.4)
+      // thư vào: hòm rung nhẹ một cái rồi mờ dần, nhường chỗ cho ảnh cảm ơn (Hailee 26/10: nhẹ thôi, không xoay)
+      .to('#chest svg', { keyframes: [{ rotation: -2.5, duration: .12 }, { rotation: 2, duration: .14 }, { rotation: 0, duration: .2 }], transformOrigin: '50% 95%', ease: 'sine.inOut' }, 2.3)
+      .to('#chest', { opacity: 0, duration: .6, ease: 'power1.inOut' }, 2.85)
+      .add(() => gsap.set(['#chest', '#chest svg'], { clearProps: 'transform,opacity' }), 3.5);
   });
   $$('.gift .sent').forEach(btn => btn.addEventListener('click', () => {
     const f = btn.closest('.col').querySelector('.flip');
