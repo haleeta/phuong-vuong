@@ -280,6 +280,8 @@ button{font:inherit}
 .gift{padding-block:clamp(60px,8vw,110px) clamp(90px,11vw,150px);text-align:center}
 .gift h2{font-size:clamp(52px,7vw,100px)}
 .gift .subt{margin-top:16px;color:var(--ink-2);font-size:15px}
+/* câu dẫn mừng cưới nằm ngay dưới tiêu đề, cùng khối, không lơ lửng giữa tiêu đề và 2 cột (Hailee 26/10) */
+.gift .shead .lede{margin:18px auto 0;max-width:46ch;text-wrap:balance;font-family:var(--display);font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2)}
 .gift .row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(24px,5vw,70px);align-items:center;max-width:1100px;margin:60px auto 0}
 .chest svg{display:block;width:min(250px,62vw);height:auto;overflow:visible}
 .chest{display:flex;flex-direction:column;align-items:center}
@@ -1101,8 +1103,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 <!-- 6 · Mừng cưới -->
 <section class="gift" id="mung-cuoi">
   <div class="wrap">
-    <div class="shead rv"><p class="eyebrow">Gửi lời mừng từ xa</p><h2 class="script-h">Mừng cưới</h2></div>
-    <p class="subt rv">Sự hiện diện của Quý Khách là món quà lớn nhất. Nếu ở xa, xin gửi lời mừng qua mã dưới đây.</p>
+    <div class="shead rv"><p class="eyebrow">Gửi lời mừng từ xa</p><h2 class="script-h">Mừng cưới</h2><p class="lede">Sự hiện diện của Quý Khách là món quà lớn nhất.<br>Nếu ở xa, xin gửi lời mừng qua mã dưới đây.</p></div>
     <div class="row">
       <div class="col rv">
         <p class="who">Chú rể</p>
