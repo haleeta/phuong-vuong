@@ -872,7 +872,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           </div>
       </div>
       <div class="venue rv">
-        <canvas class="ink" data-src="assets/home.svg" role="img" aria-label="Hình vẽ tay rạp cưới trước tư gia nhà trai"></canvas>
+        <canvas class="ink" data-src="assets/home.svg" data-lw=".5" style="opacity:.82" role="img" aria-label="Hình vẽ tay rạp cưới trước tư gia nhà trai"></canvas>
         <p class="vlab">Cả hai buổi đều tại</p>
         <p class="place">Tư gia nhà trai</p>
         <p class="addr">164 Thôn Tiên Đài, Xã Nguyệt Đức, Tỉnh Phú Thọ</p>
@@ -1337,7 +1337,7 @@ const artInit = async cv => {
   let tot = 0; segs.forEach(o => { o.t0 = tot; tot += o.L; }); segs.forEach(o => { o.t0 /= tot; o.tEnd = o.t0 * (1 - CW) + CW; });
   const cache = document.createElement('canvas');
   let cx, kx, done = 0, lastQ = -1;
-  const prep = (c, x) => { x.setTransform(c.width / VW, 0, 0, c.height / VH, 0, 0); x.fillStyle = x.strokeStyle = '#ecd9bf'; x.lineWidth = 1.4; x.lineJoin = 'round'; };
+  const prep = (c, x) => { x.setTransform(c.width / VW, 0, 0, c.height / VH, 0, 0); x.fillStyle = x.strokeStyle = '#ecd9bf'; x.lineWidth = +(cv.dataset.lw || 1.4); x.lineJoin = 'round'; };
   const reset = () => {
     const dpr = Math.min(1.5, devicePixelRatio || 1), w = cv.getBoundingClientRect().width || 600;
     cv.width = cache.width = Math.round(w * dpr); cv.height = cache.height = Math.round(w * VH / VW * dpr);
