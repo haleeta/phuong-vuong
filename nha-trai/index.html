@@ -280,6 +280,15 @@ button{font:inherit}
 .gift{padding-block:clamp(60px,8vw,110px) clamp(90px,11vw,150px);text-align:center}
 .gift h2{font-size:clamp(52px,7vw,100px)}
 .gift .subt{margin-top:16px;color:var(--ink-2);font-size:15px}
+/* bản nhà trai: ô gửi lời chúc thay cho mã QR */
+.gift .row.wish-row{grid-template-columns:minmax(0,1fr) 300px;max-width:880px}
+.wishf{display:flex;flex-direction:column;align-items:stretch;gap:10px;text-align:left}
+.wishf .wl{font-family:var(--display);font-style:italic;font-size:17px;color:var(--ink-2);margin-top:8px}
+.wishf .rc-line{max-width:none;text-align:left;font-family:var(--body);font-size:16px;padding:10px 2px}
+.wishf textarea.rc-line{resize:vertical;min-height:110px;line-height:1.6}
+.wishf .sq{align-self:flex-start;margin-top:14px}
+.wishf .wdone{font-family:var(--display);font-style:italic;font-size:17px;color:var(--wine);margin-top:4px}
+@media (max-width:760px){.gift .row.wish-row{grid-template-columns:1fr}}
 /* câu dẫn mừng cưới nằm ngay dưới tiêu đề, cùng khối, không lơ lửng giữa tiêu đề và 2 cột (Hailee 26/10) */
 .gift .shead .lede{margin:18px auto 0;max-width:46ch;text-wrap:balance;font-family:var(--display);font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2)}
 .gift .row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(24px,5vw,70px);align-items:center;max-width:1100px;margin:60px auto 0}
@@ -1104,17 +1113,16 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 <!-- 6 · Mừng cưới -->
 <section class="gift" id="mung-cuoi">
   <div class="wrap">
-    <div class="shead rv"><p class="eyebrow">Gửi lời mừng từ xa</p><h2 class="script-h">Mừng cưới</h2><p class="lede">Sự hiện diện của Quý Khách là món quà lớn nhất.<br>Nếu ở xa, xin gửi lời mừng qua mã dưới đây.</p></div>
-    <div class="row">
-      <div class="col rv">
-        <p class="who">Chú rể</p>
-        <div class="flip"><div class="fi">
-          <div class="fc front qr"><img loading="lazy" decoding="async" class="qrimg" src="assets/c959ea29f0.png" alt="Mã QR chuyển khoản mừng cưới chú rể"></div>
-          <div class="fc back meme" aria-live="polite"><div class="mm"><img class="photo" src="assets/26c40143df.jpg" alt="Ảnh hồi nhỏ: chú rể cầm phong bì mừng cưới, cô dâu nghĩ: của anh cũng là của em" loading="lazy"></div><p class="t2">Cảm ơn Quý Khách nhiều nha!</p></div>
-        </div></div>
-        <p class="bank">Timo by BVBank</p><p class="acct">9021 977 364 494</p>
-        <div class="gb"><button class="sq sm" type="button" data-copy="9021977364494">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
-      </div>
+    <div class="shead rv"><p class="eyebrow">Gửi lời chúc từ xa</p><h2 class="script-h">Lời chúc</h2><p class="lede">Sự hiện diện của Quý Khách là món quà lớn nhất.<br>Nếu ở xa, xin gửi đôi lời chúc vào hòm cưới.</p></div>
+    <div class="row wish-row">
+      <form class="wishf rv" id="wishForm" novalidate>
+        <label class="wl" for="wname">Quý danh</label>
+        <input class="rc-line" id="wname" name="wname" autocomplete="name" placeholder="Họ và tên">
+        <label class="wl" for="wmsg">Đôi lời gửi cô dâu chú rể</label>
+        <textarea class="rc-line" id="wmsg" name="wmsg" rows="4" placeholder="Lời chúc của Quý Khách"></textarea>
+        <button class="sq solid" type="submit">Gửi lời chúc</button>
+        <p class="wdone" id="wdone" role="status" hidden>Lá thư đã vào hòm. Cảm ơn Quý Khách!</p>
+      </form>
       <div class="chest rv" id="chest" aria-hidden="true">
         <svg viewBox="0 0 260 230" fill="none" stroke="#6e1a1f" stroke-linecap="round" stroke-linejoin="round">
           <defs><clipPath id="slotClip"><rect x="0" y="-200" width="260" height="284"/></clipPath></defs>
@@ -1143,16 +1151,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           <g clip-path="url(#slotClip)"><g id="slotEnv" style="visibility:hidden" stroke="none" fill="#000"><use href="#airEnv" x="98" y="40" width="64" height="40"/></g></g>
           <path id="slotLip" d="M94 88 H166" stroke-width="1.6"/>
         </svg>
-        <p class="cap" id="chestCap">Hòm mừng cưới</p>
-      </div>
-      <div class="col rv">
-        <p class="who">Cô dâu</p>
-        <div class="flip"><div class="fi">
-          <div class="fc front qr"><svg viewBox="0 0 29 29" aria-label="Mã QR mẫu" data-side="co-dau"></svg></div>
-          <div class="fc back meme" aria-live="polite"><div class="mm"><img class="photo" src="assets/24aeb19c44.jpg" alt="Ảnh hồi nhỏ: cô dâu ôm phong bì mừng cưới, chú rể mếu: ơ, anh cũng muốn" loading="lazy"></div><p class="t2">Cảm ơn Quý Khách nhiều nha!</p></div>
-        </div></div>
-        <p class="bank">Vietcombank</p><p class="acct">0711 000 293 621</p>
-        <div class="gb"><button class="sq sm" type="button" data-copy="0711000293621">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
+        <p class="cap" id="chestCap">Hòm thư cưới</p>
       </div>
     </div>
   </div>
@@ -1476,6 +1475,42 @@ form.addEventListener('submit', e => {
   });
   const fe = $('#flyenv'), slotEnv = $('#slotEnv'), cap = $('#chestCap');
   const ring2 = $('#ring2'), RL = 2 * Math.PI * 27; ring2.style.strokeDasharray = RL; ring2.style.strokeDashoffset = RL;
+  // bản nhà trai: không QR, khách gửi lời chúc → lá thư bay vào hòm + lưu vào Google Sheet (chị Phương 26/10)
+  const wf = $('#wishForm');
+  if (wf) wf.addEventListener('submit', e => {
+    e.preventDefault();
+    const nm = wf.wname.value.trim(), msg = wf.wmsg.value.trim();
+    if (!msg) { wf.wmsg.focus(); return; }
+    const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
+    if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ side: 'Nhà trai', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
+    const btn = wf.querySelector('button'), done = $('#wdone');
+    const finish = () => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; done.hidden = false; btn.textContent = 'Gửi thêm lời chúc'; btn.disabled = false; wf.wmsg.value = ''; };
+    if (!hasG || reduce) { finish(); return; }
+    btn.disabled = true; done.hidden = true;
+    const r = wf.wmsg.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect();
+    const k = bx.width / 260, W0 = 120;
+    const s0 = Math.min(r.width * .6, 220) / W0, x0 = r.left + r.width / 2 - W0 * s0 / 2, y0 = r.top + r.height / 2 - 75 * s0 / 2;
+    const s1 = 64 * k / W0, x1 = bx.left + 98 * k, y1 = bx.top + 40 * k;
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - Math.max(140, Math.abs(x1 - x0) * .35);
+    const P = { t: 0 };
+    const place = () => { const t = P.t, u = 1 - t;
+      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * (cy + 20) + t * t * y1;
+      gsap.set(fe, { x, y, scale: s0 + (s1 - s0) * t, rotation: Math.sin(t * Math.PI * 2.2) * 9 * (1 - t) + (x1 > x0 ? -6 : 6) * Math.sin(t * Math.PI), '--sh': (.25 * Math.min(1, (1 - t) / .3)).toFixed(3) }); };
+    gsap.set(slotEnv, { y: 0, visibility: 'hidden' }); place();
+    gsap.timeline({ onComplete: finish })
+      .fromTo(fe, { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 0)
+      .to(P, { t: 1, duration: 1.35, ease: 'power2.inOut', onUpdate: place }, .2)
+      .add(() => { gsap.set(fe, { opacity: 0 }); gsap.set(slotEnv, { visibility: 'visible', y: 0 }); }, 1.55)
+      .to(slotEnv, { y: 6, duration: .18, ease: 'power1.out' }, 1.57)
+      .to(slotEnv, { y: 46, duration: .5, ease: 'power3.in' }, 1.75)
+      .to('#chest svg', { scaleY: .988, scaleX: 1.006, transformOrigin: '50% 95%', duration: .26, ease: 'sine.out' }, 2.15)
+      .to('#chest svg', { scaleY: 1, scaleX: 1, duration: .6, ease: 'sine.inOut' }, 2.41)
+      .set(ring2, { opacity: .55 }, 2.25).fromTo(ring2, { strokeDashoffset: RL }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 2.25)
+      .to(cap, { opacity: 0, duration: .25 }, 2.3)
+      .add(() => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; gsap.set(slotEnv, { visibility: 'hidden' }); }, 2.55)
+      .fromTo(cap, { opacity: 0, clipPath: 'inset(-30% 100% -30% -5%)' }, { opacity: 1, clipPath: 'inset(-30% -5% -30% -5%)', duration: 1.1, ease: 'power1.inOut' }, 2.55);
+  });
   $$('.gift .sent').forEach(btn => btn.addEventListener('click', () => {
     const f = btn.closest('.col').querySelector('.flip');
     if (f.classList.contains('on')) { f.classList.remove('on'); btn.textContent = 'Tôi đã gửi mừng'; return; }
@@ -1563,7 +1598,7 @@ if (hasG && !reduce) {
   gsap.from('.shot', { clipPath: 'inset(100% 0 0 0)', y: 40, duration: 1.3, ease: 'expo.out', stagger: .07, scrollTrigger: { trigger: '#view', start: 'top 82%', once: true } });
   // chỉ mục mục đang xem + thanh tiến độ cuộn (sau phần thiệp)
   const idx = $('#idx'), prog = $('#prog');
-  const secs = [['#gia-dinh', 'Hai gia đình'], ['#lich-trinh', 'Lịch trình'], ['#ngay', 'Ngày vui'], ['#album', 'Album'], ['#xac-nhan', 'Hồi âm'], ['#mung-cuoi', 'Mừng cưới']];
+  const secs = [['#gia-dinh', 'Hai gia đình'], ['#lich-trinh', 'Lịch trình'], ['#ngay', 'Ngày vui'], ['#album', 'Album'], ['#xac-nhan', 'Hồi âm'], ['#mung-cuoi', 'Lời chúc']];
   secs.forEach(([sel, name], i) => ScrollTrigger.create({ trigger: sel, start: 'top 55%', end: 'bottom 55%', onToggle: st => { if (st.isActive) { $('#idxN').textContent = '0' + (i + 1); $('#idxT').textContent = name; } } }));
   ScrollTrigger.create({ trigger: '#gia-dinh', start: 'top 60%', endTrigger: '.end', end: 'top 45%', onToggle: st => idx.classList.toggle('on', st.isActive) });
   ScrollTrigger.create({ trigger: '#gia-dinh', start: 'top 60%', endTrigger: 'main', end: 'bottom bottom', onUpdate: st => { prog.style.transform = 'scaleX(' + st.progress.toFixed(4) + ')'; } });
