@@ -287,7 +287,11 @@ button{font:inherit}
 .wishf .rc-line{max-width:none;text-align:left;font-family:var(--body);font-size:16px;padding:10px 2px}
 .wishf textarea.rc-line{resize:vertical;min-height:110px;line-height:1.6}
 .wishf .sq{align-self:flex-start;margin-top:14px}
-.wishf .wdone{font-family:var(--display);font-style:italic;font-size:17px;color:var(--wine);margin-top:4px}
+.wthx{margin:0 auto;width:min(340px,100%);padding:12px 12px 16px;background:#fffdf9;box-shadow:0 1px 0 rgba(110,26,31,.08),0 18px 40px -18px rgba(60,10,12,.35);transform:rotate(-1.2deg);text-align:center}
+.wthx .wph{aspect-ratio:1;overflow:hidden;background:#5a1e25}
+.wthx img{display:block;width:100%;height:100%;object-fit:cover}
+.wthx figcaption{margin-top:12px;font-family:var(--display);font-style:italic;font-size:20px;color:var(--wine)}
+.wthx .sq{margin-top:12px}
 @media (max-width:760px){.gift .row.wish-row{grid-template-columns:1fr}}
 /* câu dẫn mừng cưới nằm ngay dưới tiêu đề, cùng khối, không lơ lửng giữa tiêu đề và 2 cột (Hailee 26/10) */
 .gift .shead .lede{margin:18px auto 0;max-width:46ch;text-wrap:balance;font-family:var(--display);font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2)}
@@ -1103,8 +1107,8 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
         <label class="wl" for="wmsg">Đôi lời gửi cô dâu chú rể</label>
         <textarea class="rc-line" id="wmsg" name="wmsg" rows="4" data-maxw="30" placeholder="Lời chúc của Quý Khách"></textarea>
         <button class="sq solid" type="submit">Gửi lời chúc</button>
-        <p class="wdone" id="wdone" role="status" hidden>Lá thư đã vào hòm. Cảm ơn Quý Khách!</p>
       </form>
+      <figure class="wthx" id="wthx" hidden><div class="wph"><img src="assets/24aeb19c44.jpg" alt="Ảnh hồi nhỏ của cô dâu chú rể cảm ơn Quý Khách" loading="lazy" decoding="async"></div><figcaption>Cảm ơn Quý Khách nhiều nha!</figcaption><button class="sq sm" type="button" id="wagain">Gửi thêm lời chúc</button></figure>
       <div class="chest rv" id="chest" aria-hidden="true">
         <svg viewBox="0 0 260 230" fill="none" stroke="#6e1a1f" stroke-linecap="round" stroke-linejoin="round">
           <defs><clipPath id="slotClip"><rect x="0" y="-200" width="260" height="284"/></clipPath></defs>
@@ -1471,6 +1475,7 @@ $$('textarea[data-maxw]').forEach(t => {
   const ring2 = $('#ring2'), RL = 2 * Math.PI * 27; ring2.style.strokeDasharray = RL; ring2.style.strokeDashoffset = RL;
   // cả 2 bản: không QR, khách gửi lời chúc → lá thư bay vào hòm + lưu vào Google Sheet (chị Phương 26/10)
   const wf = $('#wishForm');
+  if (wf) $('#wagain').addEventListener('click', () => { $('#wthx').hidden = true; wf.hidden = false; wf.wmsg.focus(); });
   if (wf) wf.addEventListener('submit', e => {
     e.preventDefault();
     const nm = wf.wname.value.trim(), msg = wf.wmsg.value.trim();
@@ -1478,8 +1483,10 @@ $$('textarea[data-maxw]').forEach(t => {
     const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
     if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ side: 'Nhà gái', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
-    const btn = wf.querySelector('button'), done = $('#wdone');
-    const finish = () => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; done.hidden = false; btn.textContent = 'Gửi thêm lời chúc'; btn.disabled = false; wf.wmsg.value = ''; };
+    const btn = wf.querySelector('button'), thx = $('#wthx');
+    // gửi xong: ô lời chúc nhường chỗ cho ảnh 2 bé hồi nhỏ cảm ơn (chị Phương 26/10)
+    const finish = () => { cap.textContent = 'Cảm ơn lời chúc của Quý Khách'; btn.disabled = false; wf.wmsg.value = ''; wf.wmsg.dispatchEvent(new Event('input'));
+      wf.hidden = true; thx.hidden = false; if (hasG && !reduce) gsap.fromTo(thx, { opacity: 0, y: 16, rotation: -2 }, { opacity: 1, y: 0, rotation: -1.2, duration: .9, ease: 'expo.out' }); };
     if (!hasG || reduce) { finish(); return; }
     btn.disabled = true; done.hidden = true;
     const r = wf.wmsg.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect();
