@@ -81,7 +81,7 @@ button{font:inherit}
 
 
 /* ============ STAGE: thiệp tự vẽ khi cuộn ============ */
-.stage{position:relative;height:560vh}
+.stage{position:relative;height:100vh;height:100svh}
 .stage-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
 .cam{position:relative;will-change:transform}
 .card{position:relative;container-type:inline-size;
@@ -2693,10 +2693,14 @@ function measure() {
   focus.zoom = Math.min(innerWidth * .92 / s.width, innerHeight * .62 / s.height, innerWidth > 800 ? 1.9 : 9);
 }
 let target = 0, cur = -1;
+// thiệp tự chạy (không cần cuộn): vẽ tranh → lùi máy quay → chữ → tên lớn, ~7 giây; cuộn/chạm thì tua nhanh cho xong
+let auto = null;
 function progress() {
-  const r = stage.getBoundingClientRect();
-  return clamp(-r.top / (r.height - innerHeight));
+  if (!auto) return 0;
+  return auto.p0 + (1 - auto.p0) * clamp((performance.now() - auto.t0) / auto.dur);
 }
+window.__playStage = onDone => { auto = { p0: 0, t0: performance.now(), dur: 7000, onDone }; };
+window.__speedStage = () => { if (!auto || auto.done) return; const p = progress(); if (auto.dur > 900) auto = { ...auto, p0: p, t0: performance.now(), dur: 900 }; };
 function render(p) {
   // 0 → .62: vẽ tranh (máy quay sát giấy); .55 → .78: lùi máy quay; .66 → .9: chữ hiện dần; .8 → .95: tên lớn
   draw(seg(p, .02, .62));
@@ -2710,7 +2714,7 @@ function render(p) {
   const gk = ease(seg(p, .8, .94));
   gl.style.opacity = gk; gl.style.transform = `translate(${(1 - gk) * -40}px,-50%)`;
   gr.style.opacity = gk; gr.style.transform = `translate(${(1 - gk) * 40}px,-50%)`;
-  hint.style.opacity = 1 - seg(p, .02, .08);
+  hint.style.opacity = seg(p, .96, 1);  // thiệp tự chạy xong mới hiện "Cuộn để xem tiếp"
   const d = Math.round(seg(p, .02, .62) * 100);
   meter.textContent = d < 100 ? 'đang vẽ thiệp… ' + d + '%' : 'Trân trọng kính mời';
   meter.style.opacity = p > .94 || p < .02 ? 0 : 1; meter.style.color = pull < .5 ? 'var(--ink)' : 'rgba(242,236,225,.75)';
@@ -2718,6 +2722,7 @@ function render(p) {
 function loop() {
   target = progress();
   if (Math.abs(target - cur) > .0004) { cur = cur < 0 ? target : cur + (target - cur) * .45; render(cur); }
+  if (auto && !auto.done && cur > .998) { auto.done = true; render(1); auto.onDone && auto.onDone(); }
   requestAnimationFrame(loop);
 }
 const start = () => {
@@ -2886,6 +2891,10 @@ form.addEventListener('submit', e => {
   $('#dName').textContent = name;
   $('#dSum').textContent = yes ? 'Hân hạnh tham dự · ' + (comp ? 'cùng ' + (cnt.value === '5' ? '5+' : comp) + ' người' : 'một mình') : 'Rất tiếc không thể đến, xin gửi lời chúc phúc';
   $('#dAtRow').hidden = !yes;
+  // gửi hồi âm vào Google Sheet (Apps Script web app, URL ở rsvp-hook.txt)
+  const HOOK = '__RSVP_HOOK__';
+  if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ side: 'Nhà gái', name, go: yes ? 'Tham dự' : 'Không đến', comp: yes ? (cnt.value === '5' ? '5+' : String(comp)) : '', total: yes ? (cnt.value === '5' ? '6+' : String(n)) : '', wish }) }).catch(() => {});
   const open = () => { form.hidden = true; done.hidden = false; if (window.ScrollTrigger) ScrollTrigger.refresh(); bow(); };
   if (!window.gsap) { open(); return; }
   gsap.to(form, { opacity: 0, y: -10, duration: .35, ease: 'power2.in', onComplete: () => {
@@ -3051,7 +3060,14 @@ function endIntro() {
   setTimeout(() => window.__queueArt && window.__queueArt(), 900);
   if (hintEl) { hintEl.classList.add('hint-fade'); document.documentElement.classList.remove('intro-on'); setTimeout(() => hintEl.classList.remove('hint-fade'), 1600); }
   else document.documentElement.classList.remove('intro-on');
-  if (lenis) lenis.start();
+  // thiệp tự chạy tới hết rồi mới cho cuộn tiếp (chị Phương 26/10: bỏ cuộn để hiện thiệp)
+  const unlock = () => { document.documentElement.style.overflow = ''; if (lenis) lenis.start(); if (hasG) ScrollTrigger.refresh(); };
+  if (window.__playStage && !reduce && !location.hash) {
+    document.documentElement.style.overflow = 'hidden'; if (lenis) lenis.stop();
+    const sp = () => window.__speedStage && window.__speedStage();
+    ['wheel', 'touchmove', 'keydown'].forEach(ev => addEventListener(ev, sp, { passive: true }));
+    window.__playStage(unlock);
+  } else { if (window.__render) window.__render(1); unlock(); }
 }
 const camEl0 = document.getElementById('cam');
 if (!hasG || reduce || location.hash) { endIntro(); if (hasG) ScrollTrigger.refresh(); }
