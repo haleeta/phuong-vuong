@@ -1539,8 +1539,9 @@ if (hasG && !reduce) {
 
   // 2 · tranh tư gia, nhà hàng tự vẽ
   canv.forEach(cv => {
-    const st = ScrollTrigger.create({ trigger: cv, start: 'top 90%', end: 'center 40%', scrub: true, onUpdate: s => { cv.__p = +s.progress.toFixed(3); cv.__draw && cv.__draw(cv.__p); } });
-    cv.__p = st.progress;
+    // lướt tới là tự vẽ trọn trong ~2s (Hailee 26/10: không bắt cuộn gần qua tranh mới hiện đủ)
+    const o = { p: 0 }; cv.__p = 0;
+    ScrollTrigger.create({ trigger: cv, start: 'top 85%', once: true, onEnter: () => gsap.to(o, { p: 1, duration: 2, ease: 'power1.inOut', onUpdate: () => { cv.__p = +o.p.toFixed(3); cv.__draw && cv.__draw(cv.__p); } }) });
   });
   // nhịp biên tập: chữ lật lên theo dòng, kẻ mảnh tự vẽ, tranh và giờ lệch tầng
   const lines = el => { if (el.dataset.mk) return; el.dataset.mk = 1; el.innerHTML = el.innerHTML.split(/<br\s*\/?>/i).map(t => '<span class="mk"><span>' + t + '</span></span>').join(''); return el.querySelectorAll('.mk>span'); };
