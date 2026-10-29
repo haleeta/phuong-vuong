@@ -301,6 +301,8 @@ button{font:inherit}
 .gift .wish-row.thx-on .wthx{width:min(760px,100%)}
 .gift .wish-row.thx-on .wthx figcaption{font-size:clamp(22px,2.4vw,30px);margin-top:22px}
 @media (max-width:760px){.gift .row.wish-row{grid-template-columns:1fr}}
+/* bản nhà gái: mã QR mừng cưới của cô dâu dưới hòm thư (chị Phương 29/10: chỉ bỏ QR chú rể, QR cô dâu giữ lại) */
+.gift .qr-one{margin:clamp(70px,8vw,110px) auto 0;max-width:340px;padding-top:clamp(50px,6vw,80px);border-top:1px solid var(--line)}
 /* câu dẫn mừng cưới nằm ngay dưới tiêu đề, cùng khối, không lơ lửng giữa tiêu đề và 2 cột (Hailee 26/10) */
 .gift .shead .lede{margin:18px auto 0;max-width:46ch;text-wrap:balance;font-family:var(--display);font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2)}
 .gift .row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(24px,5vw,70px);align-items:center;max-width:1100px;margin:60px auto 0}
@@ -1141,6 +1143,17 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
         </svg>
       </div>
     </div>
+    <!--QR_CO_DAU-->
+    <div class="col qr-one rv">
+      <p class="who">Mừng cưới cô dâu</p>
+      <div class="flip"><div class="fi">
+        <div class="fc front qr"><img loading="lazy" decoding="async" class="qrimg" src="assets/c959ea29f0.png" alt="Mã QR chuyển khoản mừng cưới cô dâu"></div>
+        <div class="fc back meme" aria-live="polite"><div class="mm"><img class="photo" src="assets/24aeb19c44.jpg" alt="Ảnh hồi nhỏ: cô dâu ôm phong bì mừng cưới, chú rể mếu: ơ, anh cũng muốn" loading="lazy" decoding="async"></div><p class="t2">Cảm ơn Quý Khách nhiều nha!</p></div>
+      </div></div>
+      <p class="bank">Timo by BVBank</p><p class="acct">9021 977 364 494</p>
+      <div class="gb"><button class="sq sm" type="button" data-copy="9021977364494">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
+    </div>
+    <!--/QR_CO_DAU-->
   </div>
   
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="airEnv" viewBox="0 0 160 100"><defs><pattern id="air2" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="#fff"/><rect width="3.5" height="12" fill="#c8323c"/><rect x="6" width="3.5" height="12" fill="#2f4f9c"/></pattern></defs>
@@ -1529,7 +1542,8 @@ $$('textarea[data-maxw]').forEach(t => {
   $$('.gift .sent').forEach(btn => btn.addEventListener('click', () => {
     const f = btn.closest('.col').querySelector('.flip');
     if (f.classList.contains('on')) { f.classList.remove('on'); btn.textContent = 'Tôi đã gửi mừng'; return; }
-    if (!hasG || reduce) { f.classList.add('on'); btn.textContent = 'Xem lại mã'; cap.textContent = 'Cảm ơn tấm lòng của Quý Khách'; return; }
+    const chestOff = !$('#chest svg').getBoundingClientRect().width;
+    if (!hasG || reduce || chestOff) { f.classList.add('on'); btn.textContent = 'Xem lại mã'; return; }
     btn.disabled = true;
     const qb = f.querySelector('.front'), r = f.getBoundingClientRect(), bx = $('#chest svg').getBoundingClientRect();
     const k = bx.width / 260, W0 = 120;
@@ -1560,9 +1574,6 @@ $$('textarea[data-maxw]').forEach(t => {
       .to('#chest svg', { scaleY: 1, scaleX: 1, duration: .6, ease: 'sine.inOut' }, 2.56)
       // vòng 囍 tự vẽ lại như nét bút, rồi lời cảm ơn
       .set(ring2, { opacity: .55 }, 2.4).fromTo(ring2, { strokeDashoffset: RL }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 2.4)
-      .to(cap, { opacity: 0, duration: .25 }, 2.45)
-      .add(() => { cap.textContent = 'Cảm ơn tấm lòng của Quý Khách'; }, 2.7)
-      .fromTo(cap, { opacity: 0, clipPath: 'inset(-30% 100% -30% -5%)' }, { opacity: 1, clipPath: 'inset(-30% -5% -30% -5%)', duration: 1.1, ease: 'power1.inOut' }, 2.7)
       .add(() => { f.classList.add('on'); btn.textContent = 'Xem lại mã'; gsap.set(slotEnv, { visibility: 'hidden' }); setTimeout(() => gsap.set(qb, { clearProps: 'all' }), 1200); }, 2.9);
   }));
 
