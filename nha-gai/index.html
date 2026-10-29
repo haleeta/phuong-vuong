@@ -302,7 +302,13 @@ button{font:inherit}
 .gift .wish-row.thx-on .wthx figcaption{font-size:clamp(22px,2.4vw,30px);margin-top:22px}
 @media (max-width:760px){.gift .row.wish-row{grid-template-columns:1fr}}
 /* bản nhà gái: mã QR mừng cưới của cô dâu dưới hòm thư (chị Phương 29/10: chỉ bỏ QR chú rể, QR cô dâu giữ lại) */
-.gift .qr-one{margin:clamp(70px,8vw,110px) auto 0;max-width:340px;padding-top:clamp(50px,6vw,80px);border-top:1px solid var(--line)}
+/* 3 cột trong 1 màn: lời chúc | hòm | QR cô dâu (Hailee 29/10) */
+.gift .row.wish-row:has(.qr-one){grid-template-columns:minmax(0,1fr) 230px 330px;max-width:1140px;margin-top:44px}
+.gift .qr-one .who{margin-bottom:14px}
+.gift .qr-one .flip{width:min(190px,60vw)}
+.gift .qr-one .gb{margin-top:16px}
+.gift .wish-row.thx-on:has(.qr-one){grid-template-columns:minmax(0,1fr) 330px}
+@media (max-width:760px){.gift .row.wish-row:has(.qr-one){grid-template-columns:1fr}.gift .qr-one{padding-top:44px;border-top:1px solid var(--line)}}
 /* câu dẫn mừng cưới nằm ngay dưới tiêu đề, cùng khối, không lơ lửng giữa tiêu đề và 2 cột (Hailee 26/10) */
 .gift .shead .lede{margin:18px auto 0;max-width:46ch;text-wrap:balance;font-family:var(--display);font-style:italic;font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2)}
 .gift .row{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(24px,5vw,70px);align-items:center;max-width:1100px;margin:60px auto 0}
@@ -949,7 +955,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
       <form id="form" class="rc-form qz" novalidate>
         <p class="rc-t">THƯ HỒI ÂM</p>
         <div class="rc-hy" aria-hidden="true"><i></i><b>囍</b><i></i></div>
-        <div class="qz-top" aria-hidden="true"><span id="qzN">01 / 03</span><span class="qz-dots"><i class="on"></i><i></i><i></i></span></div>
+        <div class="qz-top" aria-hidden="true"><span id="qzN">01 / 03</span><span class="qz-dots"><i class="on"></i><i></i><i></i><!--WISH4--><i></i><!--/WISH4--></span></div>
         <div class="qz-stage" aria-live="polite">
           <div class="qz-s on" data-s="1">
             <p class="qz-hi">Kính chào Quý Khách,</p>
@@ -974,6 +980,14 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
             </div>
             <input type="hidden" id="cnt" name="cnt" value="0">
           </fieldset>
+          <!--WISH4-->
+          <div class="qz-s" data-s="4">
+            <p class="qz-hi">Cuối cùng,</p>
+            <label class="qz-q" for="wish">Đôi lời gửi<br>cô dâu chú rể</label>
+            <textarea class="rc-line rc-wish qz-wish" id="wish" name="wish" rows="3" data-maxw="30" placeholder="Không bắt buộc"></textarea>
+            <button class="rc-send" type="submit">GỬI HỒI ÂM</button>
+          </div>
+          <!--/WISH4-->
         </div>
         <button class="qz-back" type="button" id="qzBack" hidden><span aria-hidden="true">←</span> Quay lại</button>
         <p class="rc-date">THỨ BẢY · 12 · 12 · 2026</p>
@@ -1142,7 +1156,6 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
           <path id="slotLip" d="M94 88 H166" stroke-width="1.6"/>
         </svg>
       </div>
-    </div>
     <!--QR_CO_DAU-->
     <div class="col qr-one rv">
       <p class="who">Mừng cưới cô dâu</p>
@@ -1154,6 +1167,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
       <div class="gb"><button class="sq sm" type="button" data-copy="9021977364494">Sao chép số</button><button class="sq sm solid sent" type="button">Tôi đã gửi mừng</button></div>
     </div>
     <!--/QR_CO_DAU-->
+    </div>
   </div>
   
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="airEnv" viewBox="0 0 160 100"><defs><pattern id="air2" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="#fff"/><rect width="3.5" height="12" fill="#c8323c"/><rect x="6" width="3.5" height="12" fill="#2f4f9c"/></pattern></defs>
@@ -1399,11 +1413,14 @@ const form = $('#form'), more = $('#more'), done = $('#done'), cnt = $('#cnt');
 /* thư hồi âm từng câu một: tên → có đến không → mấy người, chọn xong là gửi (lời chúc đã có mục riêng bên dưới, chị Phương 26/10) */
 let step = 1; const hist = [];
 const steps = Array.from(form.querySelectorAll('.qz-s')), dots = Array.from(form.querySelectorAll('.qz-dots i'));
+$('#qzN').textContent = '01 / 0' + steps.length;
+// bản nhà gái: thêm lại bước lời chúc cuối thư hồi âm (Hailee 29/10); không đến cũng được gửi lời chúc
+const W4 = steps.length >= 4;
 const goTo = (n, back) => {
   if (n === step) return;
   const cur = steps[step - 1], nx = steps[n - 1];
   if (!back) hist.push(step); step = n;
-  $('#qzN').textContent = '0' + n + ' / 03'; dots.forEach((d, i) => d.classList.toggle('on', i < n));
+  $('#qzN').textContent = '0' + n + ' / 0' + steps.length; dots.forEach((d, i) => d.classList.toggle('on', i < n));
   $('#qzBack').hidden = n === 1;
   const show = () => { cur.classList.remove('on'); nx.classList.add('on'); const f = nx.querySelector('input:not([type=hidden]),textarea'); if (f && f.type !== 'radio') f.focus({ preventScroll: true }); };
   if (!window.gsap || matchMedia('(prefers-reduced-motion: reduce)').matches) return show();
@@ -1417,8 +1434,8 @@ const nameNext = () => { const v = form.name.value.trim(); $('#name-err').hidden
 form.querySelector('.qz-next').addEventListener('click', nameNext);
 form.name.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nameNext(); } });
 const send = () => (form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true })));
-form.querySelectorAll('input[name=go]').forEach(r => r.addEventListener('click', () => setTimeout(() => (r.value === 'yes' ? goTo(3) : send()), 260)));  // click: bấm lại lựa chọn cũ sau khi Quay lại vẫn đi tiếp
-form.querySelectorAll('input[name=cntc]').forEach(r => r.addEventListener('click', () => { cnt.value = r.value; setTimeout(send, 320); }));
+form.querySelectorAll('input[name=go]').forEach(r => r.addEventListener('click', () => setTimeout(() => (r.value === 'yes' ? goTo(3) : W4 ? goTo(4) : send()), 260)));  // click: bấm lại lựa chọn cũ sau khi Quay lại vẫn đi tiếp
+form.querySelectorAll('input[name=cntc]').forEach(r => r.addEventListener('click', () => { cnt.value = r.value; setTimeout(W4 ? () => goTo(4) : send, W4 ? 260 : 320); }));
 $('#qzBack').addEventListener('click', () => { const p = hist.pop(); if (p) goTo(p, true); });
 /* chuyển động cúi đầu kiểu phim vẽ tay: 12 hình/giây, nét rung nhẹ, cúi xong giữ nguyên */
 const bow = () => {
@@ -1473,7 +1490,8 @@ $$('textarea[data-maxw]').forEach(t => {
     const w = t.value.match(/\S+/g) || [];
     if (w.length > N) { const m = t.value.match(new RegExp('^\\s*(?:\\S+\\s+){' + (N - 1) + '}\\S+')); if (m) t.value = m[0]; }
     const n = Math.min(N, w.length); c.textContent = n + ' / ' + N + ' từ'; c.classList.toggle('full', n >= N);
-    t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px';
+    // ô đang ẩn (bước lời chúc thư hồi âm) đo ra 0: để CSS lo chiều cao, gõ chữ mới tự giãn
+    t.style.height = 'auto'; const sh = t.scrollHeight; t.style.height = sh ? sh + 'px' : '';
   };
   t.addEventListener('input', fit); fit();
 });
@@ -1560,7 +1578,24 @@ $$('textarea[data-maxw]').forEach(t => {
       gsap.set(fe, { x, y, scale: sc, rotation: rot, '--sh': (.25 * Math.min(1, (1 - t) / .3)).toFixed(3) });
     };
     gsap.set(slotEnv, { y: 0, visibility: 'hidden' });
-    const tl = gsap.timeline({ onComplete: () => { btn.disabled = false; } });
+    // phong bì vào hòm xong: ảnh 2 bé từ khe hòm bay ra, đáp đúng chỗ ô QR (Hailee 29/10)
+    const flyOut = () => {
+      gsap.set(slotEnv, { visibility: 'hidden' });
+      const b = $('#chest svg').getBoundingClientRect(), kk = b.width / 260, card = f.getBoundingClientRect(), w = card.width, h = card.height, fi = f.querySelector('.fi');
+      const ph = f.querySelector('.back').cloneNode(true);
+      ph.querySelectorAll('img').forEach(i => { i.loading = 'eager'; });
+      Object.assign(ph.style, { position: 'fixed', inset: 'auto', left: '0', top: '0', width: w + 'px', height: h + 'px', zIndex: 61, pointerEvents: 'none', backfaceVisibility: 'visible', webkitBackfaceVisibility: 'visible', boxShadow: '0 18px 40px -18px rgba(60,10,12,.45)' });
+      document.body.appendChild(ph);
+      const sx = b.left + 130 * kk, sy = b.top + 86 * kk, ex = card.left + w / 2, ey = card.top + h / 2;
+      const cx = (sx + ex) / 2, cy = Math.min(sy - 90 * kk, ey) - Math.max(80, Math.abs(ex - sx) * .25), Q = { t: 0 };
+      const put = () => { const t = Q.t, u = 1 - t, X = u * u * sx + 2 * u * t * cx + t * t * ex, Y = u * u * sy + 2 * u * t * cy + t * t * ey;
+        gsap.set(ph, { x: X - w / 2, y: Y - h / 2, scale: .1 + .9 * t, rotationY: 0, rotation: (ex > sx ? 7 : -7) * Math.sin(t * Math.PI), transformOrigin: '50% 50%' }); };
+      put();
+      gsap.timeline({ onComplete: () => { fi.style.transition = 'none'; f.classList.add('on'); void fi.offsetWidth; fi.style.transition = ''; ph.remove(); gsap.set(qb, { clearProps: 'all' }); btn.textContent = 'Xem lại mã'; btn.disabled = false; } })
+        .fromTo(ph, { opacity: 0 }, { opacity: 1, duration: .25, ease: 'power1.out' }, 0)
+        .to(Q, { t: 1, duration: 1.25, ease: 'power2.inOut', onUpdate: put }, 0);
+    };
+    const tl = gsap.timeline();
     place();
     tl.to(qb, { scale: .86, opacity: 0, duration: .45, ease: 'power2.inOut', transformOrigin: '50% 50%' }, 0)
       .fromTo(fe, { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, .1)
@@ -1574,7 +1609,7 @@ $$('textarea[data-maxw]').forEach(t => {
       .to('#chest svg', { scaleY: 1, scaleX: 1, duration: .6, ease: 'sine.inOut' }, 2.56)
       // vòng 囍 tự vẽ lại như nét bút, rồi lời cảm ơn
       .set(ring2, { opacity: .55 }, 2.4).fromTo(ring2, { strokeDashoffset: RL }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 2.4)
-      .add(() => { f.classList.add('on'); btn.textContent = 'Xem lại mã'; gsap.set(slotEnv, { visibility: 'hidden' }); setTimeout(() => gsap.set(qb, { clearProps: 'all' }), 1200); }, 2.9);
+      .add(flyOut, 2.75);
   }));
 
 
