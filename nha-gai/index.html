@@ -303,7 +303,8 @@ button{font:inherit}
 @media (max-width:760px){.gift .row.wish-row{grid-template-columns:1fr}}
 /* bản nhà gái: mã QR mừng cưới của cô dâu dưới hòm thư (chị Phương 29/10: chỉ bỏ QR chú rể, QR cô dâu giữ lại) */
 /* 3 cột trong 1 màn: lời chúc | hòm | QR cô dâu (Hailee 29/10) */
-.gift .row.wish-row:has(.qr-one){grid-template-columns:minmax(0,1fr) 230px 330px;max-width:1140px;margin-top:44px}
+.gift .row.wish-row:has(.qr-one){grid-template-columns:330px 260px;justify-content:center;gap:clamp(40px,7vw,110px);max-width:none;margin-top:44px}
+.gift .row.wish-row:has(.qr-one) .qr-one{order:-1}
 .gift .qr-one .who{margin-bottom:14px}
 .gift .qr-one .flip{width:min(190px,60vw)}
 .gift .qr-one .gb{margin-top:16px}
@@ -1117,8 +1118,9 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 <!-- 6 · Mừng cưới -->
 <section class="gift" id="mung-cuoi">
   <div class="wrap">
-    <div class="shead rv"><p class="eyebrow">Gửi lời chúc từ xa</p><h2 class="script-h">Lời chúc</h2><p class="lede">Sự hiện diện của Quý Khách là món quà lớn nhất.<br>Nếu ở xa, xin gửi đôi lời chúc vào hòm cưới.</p></div>
+    <div class="shead rv"><p class="eyebrow">Gửi lời mừng từ xa</p><h2 class="script-h">Mừng cưới</h2><p class="lede">Sự hiện diện của Quý Khách là món quà lớn nhất.<br>Nếu ở xa, xin gửi lời mừng qua mã dưới đây.</p></div>
     <div class="row wish-row">
+      <!--WF_START
       <form class="wishf rv" id="wishForm" novalidate>
         <label class="wl" for="wname">Quý danh</label>
         <input class="rc-line" id="wname" name="wname" autocomplete="name" placeholder="Họ và tên">
@@ -1127,6 +1129,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
         <button class="sq solid" type="submit">Gửi lời chúc</button>
       </form>
       <figure class="wthx" id="wthx" hidden><div class="wpair"><div class="wph a"><img src="assets/26c40143df.jpg" alt="Ảnh hồi nhỏ: chú rể cầm phong bì, cô dâu nghĩ: của anh cũng là của em" loading="lazy" decoding="async"></div><div class="wph b"><img src="assets/24aeb19c44.jpg" alt="Ảnh hồi nhỏ: cô dâu ôm phong bì, chú rể mếu: ơ, anh cũng muốn" loading="lazy" decoding="async"></div></div><figcaption>Cảm ơn Quý Khách nhiều nha!</figcaption><button class="sq sm" type="button" id="wagain">Gửi thêm lời chúc</button></figure>
+      WF_END-->
       <div class="chest rv" id="chest" aria-hidden="true">
         <svg viewBox="0 0 260 230" fill="none" stroke="#6e1a1f" stroke-linecap="round" stroke-linejoin="round">
           <defs><clipPath id="slotClip"><rect x="0" y="-200" width="260" height="284"/></clipPath></defs>
@@ -1659,7 +1662,7 @@ if (hasG && !reduce) {
   gsap.from('.shot', { clipPath: 'inset(100% 0 0 0)', y: 40, duration: 1.3, ease: 'expo.out', stagger: .07, scrollTrigger: { trigger: '#view', start: 'top 82%', once: true } });
   // chỉ mục mục đang xem + thanh tiến độ cuộn (sau phần thiệp)
   const idx = $('#idx'), prog = $('#prog');
-  const secs = [['#gia-dinh', 'Hai gia đình'], ['#lich-trinh', 'Lịch trình'], ['#ngay', 'Ngày vui'], ['#album', 'Album'], ['#xac-nhan', 'Hồi âm'], ['#mung-cuoi', 'Lời chúc']];
+  const secs = [['#gia-dinh', 'Hai gia đình'], ['#lich-trinh', 'Lịch trình'], ['#ngay', 'Ngày vui'], ['#album', 'Album'], ['#xac-nhan', 'Hồi âm'], ['#mung-cuoi', 'Mừng cưới']];
   secs.forEach(([sel, name], i) => ScrollTrigger.create({ trigger: sel, start: 'top 55%', end: 'bottom 55%', onToggle: st => { if (st.isActive) { $('#idxN').textContent = '0' + (i + 1); $('#idxT').textContent = name; } } }));
   ScrollTrigger.create({ trigger: '#gia-dinh', start: 'top 60%', endTrigger: '.end', end: 'top 45%', onToggle: st => idx.classList.toggle('on', st.isActive) });
   ScrollTrigger.create({ trigger: '#gia-dinh', start: 'top 60%', endTrigger: 'main', end: 'bottom bottom', onUpdate: st => { prog.style.transform = 'scaleX(' + st.progress.toFixed(4) + ')'; } });
