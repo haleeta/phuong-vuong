@@ -295,7 +295,7 @@ function html(p, i) {
   const pn = '<span class="pn">' + pad(i) + '</span>', n = p.n;
   switch (p.k) {
     case 'cus': return { c: 'cus', h: CUS[p.id] };
-    case 'cover': return { c: 'cover', h: '<i class="rl t"></i><div class="nm">Mai Phương<br>&amp; Quốc Vương</div><div class="cl">Pre-wedding album</div>' + COUPLE + '<i class="rl"></i><div class="ft"><span></span><span>12 · 12 · 2026</span></div>' };
+    case 'cover': return { c: 'cover', h: '<div class="nm">Mai Phương<br>&amp; Quốc Vương</div><div class="cl">Pre-wedding album</div>' + COUPLE + '<i class="rl"></i><div class="ft"><span></span></div>' };  // Hailee 25/11: bỏ đường kẻ trên + ngày trên bìa
     case 'backc': return { c: 'backc', h: '' };
     case 'blank': return { c: 'blank', h: '' };
     case 'title': return { c: 'title', h: '<div class="t">Mùa đông năm ấy<br>mình nên duyên</div><div class="d">12 · 12 · 2026</div>' };  // Hailee 25/11: chữ trang đầu
