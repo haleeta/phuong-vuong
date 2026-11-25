@@ -16,7 +16,7 @@
   --bod:'Cormorant Garamond',Garamond,serif;--mono:'Noto Serif',Georgia,serif;
   --pw:420px;--ph:600px;--ease:cubic-bezier(.45,.05,.2,1)}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--stage);}
+html,body{margin:0;height:100%;background:var(--stage);overscroll-behavior:none}
 #app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 45%,#7a1c21 0%,var(--stage) 55%,#4a0e12 100%);color:var(--ink);font-family:var(--mono);-webkit-tap-highlight-color:transparent}
 /* điện thoại cầm dọc: xoay cả album 90° cho nằm ngang (Hailee 25/11: bắt buộc xem ngang) */
 .rot #app{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-origin:0 0;transform:rotate(90deg)}
@@ -199,7 +199,7 @@ a{color:inherit}
 <script>
 (() => {
 const N = 30;
-const BW = new Set([8, 14, 15, 21, 29, 30]);  // Hailee 25/11: ảnh 4 về có màu  // 29 + 30 cùng trang nên cùng đen trắng, cùng sắc độ mềm                // ảnh đen trắng
+const BW = new Set([8, 14, 15, 21]);  // 25/11: ảnh 29, 30 về có màu (chị Phương: "trắng đen hơi sợ")  // Hailee 25/11: ảnh 4 về có màu  // 29 + 30 cùng trang nên cùng đen trắng, cùng sắc độ mềm                // ảnh đen trắng
 const pad = n => String(n).padStart(2, '0');
 const PEOPLE = {1: [0.148, 0.199, 0.974, 0.741], 2: [0.495, 0.210, 0.892, 0.734], 3: [0.144, 0.214, 0.875, 0.677], 4: [0.005, 0.215, 0.859, 0.906], 5: [0.469, 0.212, 0.969, 0.618], 6: [0.575, 0.277, 0.886, 0.840], 7: [0.082, 0.162, 0.996, 0.993], 8: [0.549, 0.292, 0.973, 0.851], 9: [0.189, 0.103, 0.830, 1.0], 10: [0.558, 0.353, 0.768, 0.822], 11: [0.339, 0.357, 0.796, 0.910], 12: [0.507, 0.359, 0.740, 0.864], 13: [0.053, 0.216, 0.815, 0.999], 14: [0.222, 0.217, 0.923, 1.0], 15: [0.192, 0.144, 0.981, 0.994], 16: [0.059, 0.174, 0.996, 1.0], 17: [0.301, 0.197, 0.841, 0.707], 18: [0.090, 0.183, 0.970, 0.990], 19: [0.528, 0.254, 0.853, 0.954], 20: [0.241, 0.230, 0.822, 1.0], 22: [0.269, 0.255, 0.823, 0.785], 23: [0.070, 0.243, 0.645, 0.995], 24: [0.024, 0.131, 1.0, 0.997], 26: [0.197, 0.109, 0.850, 1.0], 27: [0.032, 0.134, 0.992, 1.0], 28: [0.052, 0.144, 0.600, 1.0], 29: [0.330, 0.249, 0.662, 0.969]};  // khung người (x0,y0,x1,y1, tỉ lệ ảnh), dò bằng Vision 25/11
 const FX = {1: 49, 2: 53, 3: 51, 4: 52, 5: 51, 6: 60, 7: 43, 8: 63, 9: 55, 10: 55, 11: 55, 12: 52, 13: 35, 14: 51, 15: 45, 16: 57, 17: 57, 18: 55, 19: 56, 20: 54, 21: 55, 22: 54, 23: 58, 24: 62, 25: 58, 26: 51, 27: 55, 28: 51, 29: 52, 30: 51};  // tâm ngang của 2 khuôn mặt (%), Vision 25/11: mặt cô dâu chú rể giữa khung  // lệch khung ngang theo ảnh (Hailee 25/11: ảnh 13 dịch sang trái)
