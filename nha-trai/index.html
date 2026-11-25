@@ -724,8 +724,10 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 .paper-c{justify-content:flex-start;padding-top:calc(var(--u)*58);padding-bottom:calc(var(--u)*20)}
 .pc-title{font-size:calc(var(--u)*26);letter-spacing:calc(var(--u)*4);padding-left:calc(var(--u)*4);white-space:nowrap}
 .pc-rule{width:calc(var(--u)*330);margin-top:calc(var(--u)*28);opacity:.5}
-/* chị Phương 25/11: "TRÂN TRỌNG KÍNH MỜI QUÝ KHÁCH" 1 dòng (cả 2 bản): thu chữ cho vừa khổ thiệp */
-.pc-title{font-size:calc(var(--u)*18.5);letter-spacing:calc(var(--u)*2.6);padding-left:calc(var(--u)*2.6)}
+/* chị Phương 25/11 (cả 2 bản): "Quý Khách" viết tay (Great Vibes, Hailee chọn A) trên dòng kẻ dưới "TRÂN TRỌNG KÍNH MỜI", như điền tay lên thiệp giấy */
+.pc-title{font-size:calc(var(--u)*24);letter-spacing:calc(var(--u)*4);padding-left:calc(var(--u)*4)}
+.pc-guest{width:calc(var(--u)*330);margin-top:calc(var(--u)*6);border-bottom:1px solid rgba(110,26,31,.5);text-align:center;line-height:1}
+.pc-guest span{display:inline-block;font:400 calc(var(--u)*36)/1 'Great Vibes',cursive;color:var(--wine,#6e1a1f);transform:translateY(.16em) rotate(-2deg)}
 .pc-it{font-family:var(--body);font-size:calc(var(--u)*17);line-height:1.6;margin-top:calc(var(--u)*16)}
 .pc-sm{font-weight:600;font-size:calc(var(--u)*16.5);letter-spacing:calc(var(--u)*3);padding-left:calc(var(--u)*3);margin-top:calc(var(--u)*18)}
 .pc-venue{font-size:calc(var(--u)*35);margin-top:calc(var(--u)*4);line-height:1.15}
@@ -763,7 +765,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
             <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:72px;line-height:1;letter-spacing:10px">DATE</span>
           </div>
           <div style="position:absolute;left:0;right:0;top:400px;display:flex;justify-content:center"><div style="padding:0 18px 2px;border-bottom:1px solid #f2ece1;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:44px;line-height:1.1">12.12.2026</div></div>
-          <div style="position:absolute;left:0;right:0;top:470px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px;opacity:.85">Quốc Vương &amp; Mai Phương</div>
+          <div style="position:absolute;left:0;right:0;top:470px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px;opacity:.85">Mai Phương &amp; Quốc Vương</div>
           <div style="position:absolute;left:0;right:0;top:572px;display:flex;justify-content:center;align-items:baseline;gap:8px;font-size:17px;letter-spacing:.3px"><span>Trân trọng kính mời Quý Khách</span></div>
         </div>
         <i class="lightfx"></i><i class="edgefx"></i><i class="sheen" id="sheenF"></i><i class="shade" id="shadeF"></i>
@@ -863,8 +865,8 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
 
         <div class="paper-c">
           <h1 class="sr">Quốc Vương &amp; Mai Phương</h1>
-          <p class="pc-title tx">TRÂN TRỌNG KÍNH MỜI QUÝ KHÁCH</p>
-          <div class="pc-rule tx"></div>
+          <p class="pc-title tx">TRÂN TRỌNG KÍNH MỜI</p>
+          <div class="pc-guest tx"><span>Quý Khách</span></div>
           <p class="pc-it tx">Tới dự bữa cơm thân mật chung vui<br>mừng Lễ Thành Hôn của hai con chúng tôi tại</p>
           <p class="pc-venue tx">TƯ GIA NHÀ TRAI</p>
           <p class="pc-addr tx">164 Thôn Tiên Đài, Xã Nguyệt Đức, Tỉnh Phú Thọ</p>
@@ -920,7 +922,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
     <article class="ev ev-two">
       <div class="days rv">
           <div class="day">
-            <p class="kind">Cơm thân mật</p>
+            <p class="kind">Bữa cơm thân mật</p>
             <p class="dnum">11</p>
             <p class="lab">Thứ Sáu · Tháng 12</p>
             <p class="dtime">16 giờ 00</p>
@@ -1475,7 +1477,7 @@ form.addEventListener('submit', e => {
   $('#dSum').textContent = yes ? 'Hân hạnh tham dự · ' + (comp ? 'cùng ' + (cnt.value === '5' ? '5+' : comp) + ' người' : 'một mình') : 'Rất tiếc không thể đến, xin gửi lời chúc phúc';
   $('#dAtRow').hidden = !yes;
   // gửi hồi âm vào Google Sheet (Apps Script web app, URL ở rsvp-hook.txt)
-  const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
+  const HOOK = '__RSVP_HOOK__';
   if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ side: 'Nhà trai', name, go: yes ? 'Tham dự' : 'Không đến', comp: yes ? (cnt.value === '5' ? '5+' : String(comp)) : '', total: yes ? (cnt.value === '5' ? '6+' : String(n)) : '', wish }) }).catch(() => {});
   const open = () => { form.hidden = true; done.hidden = false; if (window.ScrollTrigger) ScrollTrigger.refresh(); bow(); };
@@ -1517,7 +1519,7 @@ $$('textarea[data-maxw]').forEach(t => {
     e.preventDefault();
     const nm = wf.wname.value.trim(), msg = wf.wmsg.value.trim();
     if (!msg) { wf.wmsg.focus(); return; }
-    const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
+    const HOOK = '__RSVP_HOOK__';
     if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ side: 'Nhà trai', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
     const btn = wf.querySelector('button'), thx = $('#wthx');
