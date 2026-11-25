@@ -6,7 +6,7 @@
 <title>Album ảnh cưới · Mai Phương &amp; Quốc Vương</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+TC:wght@400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Noto+Serif:ital,wght@0,400;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+TC:wght@400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Noto+Serif:ital,wght@0,400;1,400&family=Imperial+Script&family=Be+Vietnam+Pro:wght@700&display=swap">
 <!-- Album ảnh cưới kiểu tạp chí thời trang, sách lật (Hailee 25/11: hướng A, dàn theo ref zine thời trang tối giản Hailee gửi, font + màu đỏ rượu giống thiệp (Cormorant Garamond, Noto Serif), phủ kín màn hình, điện thoại bắt buộc xem ngang,
      KHÔNG tách nền: khung ảnh nguyên vẹn đè lên một phần chữ; chữ chỉ có tên, ngày, số ảnh).
      Máy tính: 2 trang 1 lần, lật quanh gáy. Điện thoại: 1 trang 1 lần. Mở thẳng 1 ảnh: album/#07.
@@ -32,6 +32,12 @@ a{color:inherit}
 .arr:hover:not(:disabled){background:rgba(110,26,31,.1);color:var(--ink)}
 .arr:disabled{opacity:.2;cursor:default}
 .arr svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5}
+/* Hailee 25/11: nhạc sách lật tự phát + nút loa cạnh mũi tên */
+.snd{margin-left:2px;position:relative}.snd:before{content:"";position:absolute;left:-4px;top:10px;bottom:10px;width:1px;background:rgba(110,26,31,.18)}
+.snd svg{width:17px;height:17px;stroke-linecap:round;stroke-linejoin:round}.snd .sp{fill:currentColor;stroke:none}
+.snd .wv,.snd.on .x{display:none}.snd.on .wv{display:inline}
+.snd.on .wv path{animation:sndW 1.8s ease-in-out infinite}.snd.on .wv path+path{animation-delay:.3s}
+@keyframes sndW{50%{opacity:.35}}
 .cnt{min-width:8ch;text-align:center;font:400 10.5px var(--mono);letter-spacing:.22em;color:var(--ink)}
 .hint{position:absolute;left:0;right:0;bottom:56px;z-index:21;text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);transition:opacity .6s;pointer-events:none}
 .stage{position:absolute;inset:0 0 56px;display:flex;align-items:center;justify-content:center;perspective:2600px}
@@ -171,58 +177,7 @@ a{color:inherit}
 .zv .sp:hover .zp:not(.e){box-shadow:0 14px 28px -12px rgba(40,10,10,.6)}
 .zv .zp img{opacity:1}
 .idx .x{position:fixed;top:14px;right:clamp(12px,3vw,30px);width:48px;height:48px;font-size:30px;line-height:1;color:var(--ink)}
-/* khổ trang ngang 3:2 (Hailee 25/11, ref Heyzine): ảnh gốc đều dọc 2:3 nên khung ảnh đo theo chiều cao trang (cqh), giữ dọc */
-body:not(.single) .cover .nm{font-size:5.4cqh;top:13cqh}
-body:not(.single) .cover .cl{top:28cqh;font-size:max(7px,1cqh)}
-body:not(.single) .cover svg{left:27cqw;width:46cqw}
-body:not(.single) .cover .ft{font-size:max(7px,.9cqh)}
-body:not(.single) .seq .strip{left:7cqw;width:auto;top:18cqh;height:58cqh}
-body:not(.single) .seq .strip .ph{flex:none;width:38.7cqh}
-@media (hover:hover){body:not(.single) .seq .strip .ph:hover{flex-grow:0}}
-body:not(.single) .seq .pn{top:12.5cqh}body:not(.single) .seq .m{top:79cqh}
-body:not(.single) .half .ph{top:0;bottom:0;height:auto;width:66.7cqh}
-body:not(.single) .half.f .ph{left:0;right:auto}body:not(.single) .half.b .ph{right:0;left:auto}
-body:not(.single) .half.f .vt{right:3.5cqw}body:not(.single) .half.b .vt{left:3.5cqw;right:auto}
-/* Hailee 25/11: ảnh 9 là ảnh ngang duy nhất, khung dọc lẹm mặt → 2 trang topm đối nhau dùng khung ngang 1.6 như bản cũ */
-body:not(.single) .topm .ph{top:12cqh;height:60cqh;width:96cqh}
-body:not(.single) .topm.b .ph{left:7cqw;right:auto}body:not(.single) .topm.f .ph{right:7cqw;left:auto}
-body:not(.single) .topm .pn{top:75cqh}body:not(.single) .topm .m{top:79cqh}
-body:not(.single) .topm.b .pn,body:not(.single) .topm.b .m{left:7cqw}
-body:not(.single) .topm.f .pn,body:not(.single) .topm.f .m{right:7cqw;left:auto;text-align:right}
-body:not(.single) .duo .row{left:0;right:0;top:11cqh;height:74cqh;justify-content:center;gap:3cqw}
-body:not(.single) .duo .p1{flex:none;width:26cqh;height:52%}body:not(.single) .duo .p2{flex:none;width:49.3cqh;height:100%}
-@media (hover:hover){body:not(.single) .duo .p1:hover{flex-grow:0;height:60%}body:not(.single) .duo .p2:hover{flex-grow:0}}
-body:not(.single) .duo .p1.act{flex-grow:0;height:60%}body:not(.single) .duo .p2.act{flex-grow:0}
-body:not(.single) .duo .m{top:89cqh}body:not(.single) .duo.b .m{right:calc(50cqw - 37.6cqh - 1.5cqw)}body:not(.single) .duo.f .m{left:calc(50cqw - 37.6cqh - 1.5cqw)}
-body:not(.single) .two .row{left:0;right:0;top:17cqh;height:60cqh;justify-content:center;gap:3cqw}
-body:not(.single) .two .row .ph{flex:none;width:40cqh}
-@media (hover:hover){body:not(.single) .two .row .ph:hover{flex-grow:0}}
-body:not(.single) .two .m{left:calc(50cqw - 40cqh - 1.5cqw);top:80cqh}
-body:not(.single) .frame .ph{top:9cqh;bottom:12cqh;width:52.7cqh;left:calc(50cqw - 26.35cqh);right:auto}
-body:not(.single) .frame .m{left:calc(50cqw - 26.35cqh)}
-body:not(.single) .end{--ec:47cqh}
-/* xem từng trang trên điện thoại: trang dọc 9:16 (Hailee 25/11). Ảnh gốc dọc 2:3 nên khung đo theo bề ngang trang (cqw) */
-.single .cover .nm{font-size:9cqw;top:13cqh}
-.single .cover .cl{top:27cqh;font-size:max(7px,1.8cqw)}
-.single .cover .ft,.single .title .d{font-size:max(7px,1.6cqw)}
-.single .title .t{font-size:5.4cqw}
-.single .m{font-size:max(8px,2.4cqw)}.single .pn{font-size:max(9px,2.8cqw)}
-.single .seq .strip{left:7cqw;width:86cqw;top:34cqh;height:41cqw}
-.single .seq .pn{top:calc(34cqh - 4cqh)}.single .seq .m{top:calc(34cqh + 41cqw + 2cqh)}
-.single .half .ph{height:64cqh}
-.single .topm .ph{left:7cqw;right:7cqw;top:8cqh;height:129cqw}
-.single .topm .pn{top:calc(8cqh + 129cqw + 2.5cqh)}.single .topm .m{top:calc(8cqh + 129cqw + 5.5cqh)}
-/* ảnh ngang (ảnh 9): khung ngang 1.6, không lẹm mặt */
-.single .topm.wide .ph{top:24cqh;height:54cqw}
-.single .topm.wide .pn{top:calc(24cqh + 54cqw + 2.5cqh)}.single .topm.wide .m{top:calc(24cqh + 54cqw + 5.5cqh)}
 .single .row .ph{min-width:0}
-.single .duo .row{left:7cqw;right:7cqw;top:26cqh;height:84cqw}
-.single .duo .m{top:calc(26cqh + 84cqw + 2.5cqh)}
-.single .two .row{left:7cqw;right:7cqw;top:30cqh;height:63cqw}
-.single .two .m{left:7cqw;top:calc(30cqh + 63cqw + 2.2cqh)}
-.single .frame .ph{left:10cqw;right:10cqw;top:13cqh;bottom:auto;height:120cqw}
-.single .frame .m{left:10cqw;bottom:auto;top:calc(13cqh + 120cqw + 2.5cqh)}
-.single .end{--es:8.5cqw;--ec:46cqh}
 /* Hailee 25/11 (lần 2): lật trên điện thoại vẫn giật → mỗi tờ là 1 lớp phẳng (không preserve-3d, phối cảnh gắn vào từng tờ),
    chỉ mặt trước, bỏ bóng mờ dưới sách (filter blur), bỏ lớp tối dần + góc gấp (vẽ lại mỗi khung hình); chỉ dựng 3 tờ quanh trang đang xem */
 .single .book,.single .leaf{transform-style:flat}
@@ -232,6 +187,46 @@ body:not(.single) .end{--ec:47cqh}
 .single .leaf.flip{transform:perspective(1800px) rotateY(-180deg)}
 .single .face{backface-visibility:visible;-webkit-backface-visibility:visible}
 .single .ph img{transition:none}
+/* Hailee 25/11 (tối): dàn lại như flipbook nhà trai: trang dọc 3:4, giấy trắng, ảnh to có lề mỏng, khung vòm, khung bo góc, cụm ảnh ghép, cặp ảnh so le. Trang 3:4 cả máy tính lẫn điện thoại nên chỉ đo theo cqw (cao trang = 133.3cqw) */
+.zfull .ph{left:7cqw;right:7cqw;top:7cqw;bottom:7cqw}
+.zbleed .ph{inset:0}
+.zarch .ph{left:17cqw;right:17cqw;top:13cqw;height:86cqw;border-radius:999px}
+.zarch .m{left:0;right:0;top:108cqw;text-align:center;letter-spacing:.3em}
+.zwide .ph{left:7cqw;right:7cqw;top:38cqw;height:59cqw}
+.zwide .m{left:7cqw;top:101cqw}
+.zstag .p1{left:7cqw;top:7cqw;width:55cqw;height:60cqw}.zstag .p2{right:7cqw;bottom:7cqw;width:55cqw;height:60cqw}
+.zstag.b .m{right:7cqw;top:9cqw;text-align:right}.zstag.f .m{left:7cqw;bottom:9cqw}
+.zstag.f .p1{left:auto;right:7cqw}.zstag.f .p2{right:auto;left:7cqw}
+.ztwo .p1,.ztwo .p2{top:52cqw;width:41.5cqw;height:62cqw}.ztwo .p1{left:7cqw}.ztwo .p2{right:7cqw}
+.ztwo .m{left:7cqw;top:118cqw}
+.zcol3 .p1{left:7cqw;top:7cqw;width:51cqw;height:82cqw}.zcol3 .p2{right:7cqw;top:7cqw;width:32cqw;height:40cqw}.zcol3 .p3{right:7cqw;top:49cqw;width:32cqw;height:66cqw}
+.zcol3 .m{left:7cqw;top:94cqw}
+.zround .ph{left:13cqw;right:13cqw;top:12cqw;height:96cqw;border-radius:5cqw}
+.m{font-size:max(7px,1.9cqw)}
+.cover .nm{font-size:6.6cqw}.cover .cl{top:27cqh;font-size:max(7px,1.3cqw)}.cover .ft{font-size:max(7px,1.15cqw)}
+.title .t{font-size:max(13px,3.4cqw)}.end{--es:6.5cqw;--ec:62cqw}
+/* câu chữ trên trang (Hailee 25/11, ref poster/editorial: "Sunday", About Time, "You too devine to just be [MINE]", Valentine's):
+   chữ viết tay nét uốn RẤT TO nằm SAU ảnh (ảnh đè nửa dưới chữ); 1 câu trộn chữ in + chữ viết tay (*chữ*) + [CHỮ IN HOA];
+   nhãn đỏ nhỏ chữ nghiêng gắn mép ảnh. Hailee điền album-loi.txt: số ảnh | chữ viết tay | câu | nhãn / nhãn */
+.ly{position:absolute;inset:0;z-index:3;pointer-events:none}
+.ly .a{position:absolute;left:-2cqw;right:-2cqw;margin:0;text-align:center;font:400 27cqw/.78 'Imperial Script',cursive;color:#9e1f2a;white-space:nowrap}
+.ly .s{position:absolute;left:8cqw;right:8cqw;margin:0;text-align:center;font:400 4.6cqw/1.25 var(--bod);color:var(--ink);z-index:6}
+.ly .s i{font:400 8.6cqw/0 'Imperial Script',cursive;color:#9e1f2a;padding:0 .05em}
+.ly .s b{font:500 4cqw var(--bod);letter-spacing:.08em;white-space:nowrap}
+.ly .c{position:absolute;z-index:8;padding:.25em .6em .3em;background:#7a1a22;font:italic 400 max(9px,2.6cqw)/1 var(--bod);color:#f6f1e7;white-space:nowrap}
+.ly ~ .ph,.ly + .ph{z-index:4}
+.zfull .ly,.zbleed .ly{z-index:7}
+.zfull .ly .a,.zbleed .ly .a{bottom:9cqw;color:#fbf7f0;text-shadow:0 .4cqw 2cqw rgba(40,10,10,.35);font-size:24cqw}
+.ztwo .ly .a{top:30cqw}.zwide .ly .a{top:19cqw}
+.ztwo .ly .s,.zwide .ly .s{top:117cqw}.ztwo .m,.zwide .m{top:7cqw!important;left:7cqw!important}
+.zarch .ly .a{top:-1cqw}.zarch .ly .s{top:103cqw}.zarch .ly ~ .m,.zarch .m{top:auto!important;bottom:6cqw}
+.zcol3 .ly ~ .m{display:none}
+.zcol3 .ly .a{top:91cqw;left:4cqw;right:42cqw;text-align:left;font-size:17cqw}.zcol3 .ly .s{top:112cqw;left:7cqw;right:44cqw;text-align:left}
+.zstag .ly{z-index:7}.zstag .ly .a{top:56cqw;font-size:21cqw}
+.zround .ly .a{top:-3cqw;font-size:23cqw}
+.zstag .ly .s{font-size:3.7cqw;top:76cqw}.zstag.b .ly .s{left:5cqw;right:auto;width:35cqw;text-align:left}.zstag.f .ly .s{right:5cqw;left:auto;width:35cqw;text-align:right}
+.zstag .ly .s i{font-size:7.2cqw}
+.zbleed .ly .s,.zfull .ly .s{top:9cqw;bottom:auto;color:#fbf7f0;text-shadow:0 .3cqw 1.4cqw rgba(20,0,0,.45)}.zbleed .ly .s i,.zfull .ly .s i{color:#fbf7f0}.zround .ly .s{top:113cqw}
 @media (max-width:759px){.top .nm{display:none}}
 @media (prefers-reduced-motion:reduce){.leaf,.book{transition:none!important}}
 </style>
@@ -239,7 +234,7 @@ body:not(.single) .end{--ec:47cqh}
 <body>
 <div id="app">
 <header class="top">
-  <a href="../index.html">← Về thiệp</a>
+  <a href="../index.html#album">← Về thiệp</a>
   
   <button type="button" id="openIdx">Xem tất cả</button>
 </header>
@@ -248,7 +243,9 @@ body:not(.single) .end{--ec:47cqh}
 <nav class="bot">
   <button class="arr" id="prev" type="button" aria-label="Trang trước"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
   <button class="arr" id="next" type="button" aria-label="Trang sau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+  <button class="arr snd" id="snd" type="button" aria-label="Bật nhạc" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="sp" d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4z"/><g class="wv"><path d="M15.2 9.2a4 4 0 0 1 0 5.6"/><path d="M17.8 6.8a7.4 7.4 0 0 1 0 10.4"/></g><g class="x"><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></g></svg></button>
 </nav>
+<audio id="am" src="nhac.mp3" loop preload="auto"></audio>
 <div class="lb" id="lb" role="dialog" aria-label="Xem ảnh lớn"><button class="x" type="button" id="lbX" aria-label="Đóng">✕</button><button class="pv" type="button" id="lbP" aria-label="Ảnh trước">‹</button><img id="lbI" alt=""><button class="nx" type="button" id="lbN" aria-label="Ảnh sau">›</button><span class="c" id="lbC"></span></div>
 </div>
 <div class="idx" id="idx" role="dialog" aria-label="Tất cả ảnh"><button class="x" type="button" id="closeIdx" aria-label="Đóng">✕</button><div class="ih"><h2>Pre-wedding album</h2><div class="sw" role="tablist" aria-label="Kiểu xem"><button type="button" role="tab" data-v="album" class="on" aria-selected="true">Album</button><button type="button" role="tab" data-v="zine" aria-selected="false">Zine</button></div></div><div class="g" id="grid"></div><div class="zv" id="zv" hidden></div></div>
@@ -271,18 +268,25 @@ const COUPLE = '<svg viewBox="35.8 51.6 528.3 253.4" role="img" aria-label="Nét
 const P = [
   { k: 'cover', n: [] },
   { k: 'blank', n: [] }, { k: 'title', n: [] },
-  { k: 'seq', n: [1, 3, 2] }, { k: 'half', n: [7] },  // Hailee 25/11: đổi chỗ ảnh 5 và 7, ảnh 2 và 3, rồi ảnh 4 và 5
-  { k: 'topm', n: [9], w: 1 }, { k: 'topm', n: [4] },
-  { k: 'duo', n: [5, 8] }, { k: 'bleed', n: [6] },
-  { k: 'duo', n: [10, 11] }, { k: 'two', n: [12, 13] },
-  { k: 'bleed', n: [14] }, { k: 'frame', n: [15] },
-  { k: 'frame', n: [16] }, { k: 'frame', n: [17] },
-  { k: 'seq', n: [20, 21, 22] }, { k: 'half', n: [24], o: '50% 12%' },
-  { k: 'duo', n: [18, 19] }, { k: 'frame', n: [23] },
-  { k: 'duo', n: [25, 26] }, { k: 'duo', n: [27, 28] },
-  { k: 'two', n: [29, 30] }, { k: 'end', n: [] },
+  { k: 'zcol3', n: [1, 3, 2] }, { k: 'zarch', n: [7] },
+  { k: 'zwide', n: [9] }, { k: 'zfull', n: [4] },
+  { k: 'zstag', n: [5, 8] }, { k: 'zbleed', n: [6] },
+  { k: 'ztwo', n: [10, 11] }, { k: 'ztwo', n: [12, 13] },
+  { k: 'zbleed', n: [14] }, { k: 'zfull', n: [15] },
+  { k: 'zfull', n: [16] }  /* Hailee 25/11: cùng khung với trang phải (ảnh 17) */, { k: 'zfull', n: [17] },
+  { k: 'zcol3', n: [20, 21, 22] }, { k: 'zarch', n: [24] },
+  { k: 'zstag', n: [18, 19] }, { k: 'zfull', n: [23] },
+  { k: 'zstag', n: [25, 26] }, { k: 'ztwo', n: [27, 28] },
+  { k: 'ztwo', n: [29, 30] }, { k: 'end', n: [] },
   { k: 'backc', n: [] },
 ];
+const LOI = {"7": "Ngày nay | Biết chắc sẽ có ngày nay, nên trộm vía *yêu ngay* lần đầu tiên", "9": "đảo điên | Cứ trước hôm hẹn, tim anh như *hỗn loạn* đảo điên", "5": "yên bình | Thế giới ngoài kia vội quá, mình hãy cứ nên *yên bình*", "10": "nắm tay | Ngày ta *nắm tay* yêu công khai giữa đời, là ngày thế giới mất hai nỗi buồn", "14": "hôn | Nhìn ánh mắt em hiền, là muốn đến *hôn lên liền* | trời ơi!!!", "16": "hoa tươi | | như bao bông hoa tươi / em còn hơn cả thế", "24": "màu thơ | Em cười vẽ trời thêm *màu thơ*", "18": "tay trong tay | Tay trong tay đưa em đi ngắm *hoàng hôn* kéo tới", "25": "số 1 | Em xinh ngoan, yêu em *số 1* trên thế giới", "29": "cả đời | Tất cả mọi thứ có thể dần phai, mỗi tình cảm này *mới cả đời*"};  // { số ảnh đầu trang: 'câu' } từ album-loi.txt
+// nhãn đỏ gắn mép ảnh: vị trí (cqw) theo kiểu trang
+const SLOT = { zfull: [[7, 4], [62, 124]], zbleed: [[6, 6], [60, 124]], ztwo: [[7, 49], [58, 112]], zwide: [[7, 35], [62, 95]], zarch: [[66, 22], [8, 92]], zcol3: [[60, 3], [62, 117]], zstag: [[40, 5], [7, 124]], zround: [[60, 10], [10, 104]] };
+const ly = (n, k) => { const t = LOI[n[0]]; if (!t) return ''; const [a = '', s = '', c = ''] = t.split(/\s*\|\s*/); const sl = SLOT[k] || SLOT.zfull;
+  const sx = s.replace(/\*([^*]+)\*/g, '<i>$1</i>').replace(/\[([^\]]+)\]/g, '<b>[ $1 ]</b>');
+  return '<div class="ly">' + (a ? '<p class="a">' + a + '</p>' : '') + (s ? '<p class="s">' + sx + '</p>' : '') + c.split(' / ').filter(Boolean).slice(0, 2).map((w, i) => '<span class="c" style="left:' + sl[i][0] + 'cqw;top:' + sl[i][1] + 'cqw">' + w + '</span>').join('') + '</div>'; };
+
 const nos = n => 'No. ' + n.map(pad).join(' · ');
 function html(p, i) {
   const pn = '<span class="pn">' + pad(i) + '</span>', n = p.n;
@@ -298,6 +302,12 @@ function html(p, i) {
     case 'bleed': return { c: 'bleed', h: ph(n[0]) };
     case 'two': return { c: 'two', h: '<div class="row">' + ph(n[0], 'p1') + ph(n[1], 'p2') + '</div>' + '<span class="m">' + nos(n) + '</span>' };
     case 'frame': return { c: 'frame', h: ph(n[0]) + '<span class="m">' + nos(n) + '</span>' };
+    case 'zfull': case 'zbleed': return { c: p.k, h: ph(n[0]) + ly(n, p.k) };
+    case 'zround': return { c: p.k, h: ph(n[0]) + ly(n) };
+    case 'zarch': return { c: p.k, h: ph(n[0]) + ly(n, p.k) + '<span class="m">' + NAMES + ' · 12.12.2026</span>' };
+    case 'zwide': return { c: p.k, h: ph(n[0]) + ly(n, p.k) + '<span class="m">' + nos(n) + '</span>' };
+    case 'zstag': case 'ztwo': return { c: p.k, h: ph(n[0], 'p1') + ph(n[1], 'p2') + ly(n, p.k) + '<span class="m">' + nos(n) + '</span>' };
+    case 'zcol3': return { c: p.k, h: ph(n[0], 'p1') + ph(n[1], 'p2') + ph(n[2], 'p3') + ly(n, p.k) + '<span class="m">' + nos(n) + '</span>' };
     case 'end': return { c: 'end', h: '<div class="t">' + NAMES + '</div><span class="m">12 · 12 · 2026</span>' };
   }
 }
@@ -313,9 +323,9 @@ function build() {
   pages = P.map((p, i) => ({ p, i })).filter(x => !(single && (x.p.k === 'blank' || x.p.k === 'backc')));
   // phủ kín màn hình: mỗi trang = nửa bề ngang, cao bằng màn hình
   const W = innerWidth, H = innerHeight;
-  let ph = Math.floor((H - 70) * 0.9), pw = Math.floor(ph * 1.5);  // Hailee 25/11: mỗi trang ngang 3:2 như ref Heyzine; sách nằm giữa có lề, chừa chỗ thấy gáy giấy + bóng đổ
-  if (pw > W * 0.46) { pw = Math.floor(W * 0.46); ph = Math.floor(pw / 1.5); }
-  if (single) { ph = Math.floor(H - 56 - 24); pw = Math.floor(ph * 9 / 16); if (pw > W - 24) { pw = Math.floor(W - 24); ph = Math.floor(pw * 16 / 9); } }  // trang dọc 9:16
+  let ph = Math.floor((H - 70) * 0.9), pw = Math.floor(ph * 0.75);  // Hailee 25/11: mỗi trang ngang 3:2 như ref Heyzine; sách nằm giữa có lề, chừa chỗ thấy gáy giấy + bóng đổ
+  if (pw > W * 0.46) { pw = Math.floor(W * 0.46); ph = Math.floor(pw / 0.75); }
+  if (single) { ph = Math.floor(H - 56 - 24); pw = Math.floor(ph * 0.75); if (pw > W - 24) { pw = Math.floor(W - 24); ph = Math.floor(pw / 0.75); } }  // trang dọc 3:4 như nhà trai
   document.documentElement.style.setProperty('--pw', pw + 'px'); pwC = pw;
   document.documentElement.style.setProperty('--ph', ph + 'px');
   T = Math.max(8, Math.round(Math.min(W, H) / 52));
@@ -501,6 +511,28 @@ addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { con
 const h = parseInt(location.hash.slice(1), 10);
 build();
 if (h >= 1 && h <= N) jumpToPhoto(h);
+
+// Hailee 25/11: nhạc sách lật tự phát khi mở album (to dần); trình duyệt chặn tự phát (điện thoại) thì phát ở lần chạm/bấm/lật đầu tiên; nút loa bật/tắt, nhớ lựa chọn
+(() => {
+  const a = $('#am'), b = $('#snd'); if (!a || !b) return;
+  let want = true, fade, ctx = null, gain = null;
+  try { if (localStorage.getItem('albumSnd') === 'off') want = false; } catch (e) {}
+  const ui = on => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Tắt nhạc' : 'Bật nhạc'); };
+  const setup = () => { if (ctx || !/^http/.test(location.protocol)) return; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; try { ctx = new AC(); gain = ctx.createGain(); gain.gain.value = 0; ctx.createMediaElementSource(a).connect(gain).connect(ctx.destination); } catch (e) { ctx = gain = null; } };  // iPhone bỏ qua a.volume → to/nhỏ dần bằng Web Audio
+  const ramp = (to, ms, done) => {
+    clearInterval(fade);
+    if (gain) { const g = gain.gain, t = ctx.currentTime; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(to, t + ms / 1000); if (done) setTimeout(done, ms); return; }
+    const from = a.volume, t0 = performance.now(); fade = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / ms); a.volume = from + (to - from) * k; if (k >= 1) { clearInterval(fade); if (done) done(); } }, 40);
+  };
+  const play = () => { setup(); if (ctx && ctx.state === 'suspended') ctx.resume(); if (gain) gain.gain.value = 0; else a.volume = 0; const p = a.play(); ui(true); if (p) p.then(() => ramp(.75, 2500)).catch(() => ui(false)); };
+  const stop = () => { ui(false); ramp(0, 450, () => a.pause()); };
+  const EV = ['pointerdown', 'touchend', 'keydown', 'click'];
+  const first = e => { if (!a.paused) { EV.forEach(t => removeEventListener(t, first, true)); return; } if (e.target.closest && e.target.closest('#snd')) return; EV.forEach(t => removeEventListener(t, first, true)); if (want) play(); };
+  EV.forEach(t => addEventListener(t, first, true));
+  b.addEventListener('click', e => { e.stopPropagation(); want = !b.classList.contains('on'); want ? play() : stop(); try { localStorage.setItem('albumSnd', want ? 'on' : 'off'); } catch (_) {} });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { if (!a.paused) { a.pause(); a.dataset.r = 1; } } else if (a.dataset.r) { delete a.dataset.r; a.play().catch(() => {}); } });
+  if (want) play();  // tự phát ngay khi mở album
+})();
 })();
 </script>
 </body>
