@@ -1902,7 +1902,7 @@ else {
 (function(){
   const b = document.getElementById('bgm'), a = document.getElementById('bgmA'); if (!b || !a) return;
   let want = true, fade;
-  try { if (localStorage.getItem('bgm') === 'off') want = false; } catch (e) {}
+  // Hailee 25/11: nhạc luôn bật mặc định mỗi lần mở trang (không nhớ lần tắt trước)
   const ui = on => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Tắt nhạc' : 'Bật nhạc'); };
   // iPhone bỏ qua a.volume → nhỏ/to dần bằng Web Audio (chỉ khi chạy trên web; mở file:// thì Web Audio ra câm nên dùng volume)
   let ctx = null, gain = null;
