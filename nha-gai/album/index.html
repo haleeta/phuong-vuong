@@ -18,11 +18,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--stage);overscroll-behavior:none}
 #app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 45%,#7a1c21 0%,var(--stage) 55%,#4a0e12 100%);color:var(--ink);font-family:var(--mono);-webkit-tap-highlight-color:transparent}
-/* điện thoại cầm dọc: xoay cả album 90° cho nằm ngang (Hailee 25/11: bắt buộc xem ngang) */
-.rot #app{inset:auto;top:0;left:100vw;width:100vh;height:100vw;transform-origin:0 0;transform:rotate(90deg)}
-.turn{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:rgba(61,8,8,.92);color:#f9f6f0;font:400 13px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;text-align:center;transition:opacity .5s}
-.turn svg{width:56px;height:56px;fill:none;stroke:currentColor;stroke-width:1.3}
-.rot .turn.on{display:flex}
+/* Hailee 25/11: điện thoại cầm dọc KHÔNG ép xoay ngang nữa, xem từng trang một, khổ dọc 9:16 (.single) */
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
 a{color:inherit}
 .top{position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,36px);z-index:20;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
@@ -175,12 +171,65 @@ a{color:inherit}
 .zv .sp:hover .zp:not(.e){box-shadow:0 14px 28px -12px rgba(40,10,10,.6)}
 .zv .zp img{opacity:1}
 .idx .x{position:fixed;top:14px;right:clamp(12px,3vw,30px);width:48px;height:48px;font-size:30px;line-height:1;color:var(--ink)}
+/* khổ trang ngang 3:2 (Hailee 25/11, ref Heyzine): ảnh gốc đều dọc 2:3 nên khung ảnh đo theo chiều cao trang (cqh), giữ dọc */
+body:not(.single) .cover .nm{font-size:5.4cqh;top:13cqh}
+body:not(.single) .cover .cl{top:28cqh;font-size:max(7px,1cqh)}
+body:not(.single) .cover svg{left:27cqw;width:46cqw}
+body:not(.single) .cover .ft{font-size:max(7px,.9cqh)}
+body:not(.single) .seq .strip{left:7cqw;width:auto;top:18cqh;height:58cqh}
+body:not(.single) .seq .strip .ph{flex:none;width:38.7cqh}
+@media (hover:hover){body:not(.single) .seq .strip .ph:hover{flex-grow:0}}
+body:not(.single) .seq .pn{top:12.5cqh}body:not(.single) .seq .m{top:79cqh}
+body:not(.single) .half .ph{top:0;bottom:0;height:auto;width:66.7cqh}
+body:not(.single) .half.f .ph{left:0;right:auto}body:not(.single) .half.b .ph{right:0;left:auto}
+body:not(.single) .half.f .vt{right:3.5cqw}body:not(.single) .half.b .vt{left:3.5cqw;right:auto}
+/* Hailee 25/11: ảnh 9 là ảnh ngang duy nhất, khung dọc lẹm mặt → 2 trang topm đối nhau dùng khung ngang 1.6 như bản cũ */
+body:not(.single) .topm .ph{top:12cqh;height:60cqh;width:96cqh}
+body:not(.single) .topm.b .ph{left:7cqw;right:auto}body:not(.single) .topm.f .ph{right:7cqw;left:auto}
+body:not(.single) .topm .pn{top:75cqh}body:not(.single) .topm .m{top:79cqh}
+body:not(.single) .topm.b .pn,body:not(.single) .topm.b .m{left:7cqw}
+body:not(.single) .topm.f .pn,body:not(.single) .topm.f .m{right:7cqw;left:auto;text-align:right}
+body:not(.single) .duo .row{left:0;right:0;top:11cqh;height:74cqh;justify-content:center;gap:3cqw}
+body:not(.single) .duo .p1{flex:none;width:26cqh;height:52%}body:not(.single) .duo .p2{flex:none;width:49.3cqh;height:100%}
+@media (hover:hover){body:not(.single) .duo .p1:hover{flex-grow:0;height:60%}body:not(.single) .duo .p2:hover{flex-grow:0}}
+body:not(.single) .duo .p1.act{flex-grow:0;height:60%}body:not(.single) .duo .p2.act{flex-grow:0}
+body:not(.single) .duo .m{top:89cqh}body:not(.single) .duo.b .m{right:calc(50cqw - 37.6cqh - 1.5cqw)}body:not(.single) .duo.f .m{left:calc(50cqw - 37.6cqh - 1.5cqw)}
+body:not(.single) .two .row{left:0;right:0;top:17cqh;height:60cqh;justify-content:center;gap:3cqw}
+body:not(.single) .two .row .ph{flex:none;width:40cqh}
+@media (hover:hover){body:not(.single) .two .row .ph:hover{flex-grow:0}}
+body:not(.single) .two .m{left:calc(50cqw - 40cqh - 1.5cqw);top:80cqh}
+body:not(.single) .frame .ph{top:9cqh;bottom:12cqh;width:52.7cqh;left:calc(50cqw - 26.35cqh);right:auto}
+body:not(.single) .frame .m{left:calc(50cqw - 26.35cqh)}
+body:not(.single) .end{--ec:47cqh}
+/* xem từng trang trên điện thoại: trang dọc 9:16 (Hailee 25/11). Ảnh gốc dọc 2:3 nên khung đo theo bề ngang trang (cqw) */
+.single .cover .nm{font-size:9cqw;top:13cqh}
+.single .cover .cl{top:27cqh;font-size:max(7px,1.8cqw)}
+.single .cover .ft,.single .title .d{font-size:max(7px,1.6cqw)}
+.single .title .t{font-size:5.4cqw}
+.single .m{font-size:max(8px,2.4cqw)}.single .pn{font-size:max(9px,2.8cqw)}
+.single .seq .strip{left:7cqw;width:86cqw;top:34cqh;height:41cqw}
+.single .seq .pn{top:calc(34cqh - 4cqh)}.single .seq .m{top:calc(34cqh + 41cqw + 2cqh)}
+.single .half .ph{height:64cqh}
+.single .topm .ph{left:7cqw;right:7cqw;top:8cqh;height:129cqw}
+.single .topm .pn{top:calc(8cqh + 129cqw + 2.5cqh)}.single .topm .m{top:calc(8cqh + 129cqw + 5.5cqh)}
+/* ảnh ngang (ảnh 9): khung ngang 1.6, không lẹm mặt */
+.single .topm.wide .ph{top:24cqh;height:54cqw}
+.single .topm.wide .pn{top:calc(24cqh + 54cqw + 2.5cqh)}.single .topm.wide .m{top:calc(24cqh + 54cqw + 5.5cqh)}
+.single .row .ph{min-width:0}
+.single .duo .row{left:7cqw;right:7cqw;top:26cqh;height:84cqw}
+.single .duo .m{top:calc(26cqh + 84cqw + 2.5cqh)}
+.single .two .row{left:7cqw;right:7cqw;top:30cqh;height:63cqw}
+.single .two .m{left:7cqw;top:calc(30cqh + 63cqw + 2.2cqh)}
+.single .frame .ph{left:10cqw;right:10cqw;top:13cqh;bottom:auto;height:120cqw}
+.single .frame .m{left:10cqw;bottom:auto;top:calc(13cqh + 120cqw + 2.5cqh)}
+.single .end{--es:8.5cqw;--ec:46cqh}
+.single .leaf{transition:transform 1s var(--ease),opacity 0s}
+.single .leaf.flip{opacity:0;transition:transform 1s var(--ease),opacity .3s .7s}
 @media (max-width:759px){.top .nm{display:none}}
 @media (prefers-reduced-motion:reduce){.leaf,.book{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="turn" id="turn"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="15" y="6" width="18" height="32" rx="3"/><path d="M8 30 a18 18 0 0 0 30 10 M38 40 l0 -6 M38 40 l-6 0"/></svg>Xoay ngang điện thoại<br>để xem album</div>
 <div id="app">
 <header class="top">
   <a href="../index.html">← Về thiệp</a>
@@ -216,7 +265,7 @@ const P = [
   { k: 'cover', n: [] },
   { k: 'blank', n: [] }, { k: 'title', n: [] },
   { k: 'seq', n: [1, 3, 2] }, { k: 'half', n: [7] },  // Hailee 25/11: đổi chỗ ảnh 5 và 7, ảnh 2 và 3, rồi ảnh 4 và 5
-  { k: 'topm', n: [9] }, { k: 'topm', n: [4] },
+  { k: 'topm', n: [9], w: 1 }, { k: 'topm', n: [4] },
   { k: 'duo', n: [5, 8] }, { k: 'bleed', n: [6] },
   { k: 'duo', n: [10, 11] }, { k: 'two', n: [12, 13] },
   { k: 'bleed', n: [14] }, { k: 'frame', n: [15] },
@@ -237,7 +286,7 @@ function html(p, i) {
     case 'title': return { c: 'title', h: '<div class="t">Mùa đông năm ấy<br>mình nên duyên</div><div class="d">12 · 12 · 2026</div>' };  // Hailee 25/11: chữ trang đầu
     case 'seq': return { c: 'seq', h: pn + '<div class="strip">' + n.map(x => ph(x)).join('') + '</div><span class="m">' + nos(n) + '</span>' };
     case 'half': return { c: 'half', h: ph(n[0], '', p.o ? '' : '') };
-    case 'topm': return { c: 'topm', h: ph(n[0]) + pn + '<span class="m">' + nos(n) + '</span>' };
+    case 'topm': return { c: 'topm' + (p.w ? ' wide' : ''), h: ph(n[0]) + pn + '<span class="m">' + nos(n) + '</span>' };
     case 'duo': return { c: 'duo', h: '<div class="row">' + ph(n[0], 'p1') + ph(n[1], 'p2') + '</div>' + '<span class="m">' + nos(n) + '</span>' };
     case 'bleed': return { c: 'bleed', h: ph(n[0]) };
     case 'two': return { c: 'two', h: '<div class="row">' + ph(n[0], 'p1') + ph(n[1], 'p2') + '</div>' + '<span class="m">' + nos(n) + '</span>' };
@@ -247,18 +296,19 @@ function html(p, i) {
 }
 
 const book = $('#book'), stage = $('#stage');
-let single = false, pages = [], leaves = [], cur = 0, busy = false, rot = false;
+let single = false, pages = [], leaves = [], cur = 0, busy = false;
 const app = $('#app');
-const isPhone = () => Math.min(screen.width, screen.height) < 600 || matchMedia('(pointer:coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
-function orient() { rot = isPhone() && innerHeight > innerWidth; document.documentElement.classList.toggle('rot', rot); }
+const isSingle = () => innerHeight > innerWidth && innerWidth < 900;  // màn dọc hẹp (điện thoại, tablet dọc): 1 trang 1 lần
 function build() {
-  orient(); single = false;
+  single = isSingle();
   document.body.classList.toggle('single', single);
-  // điện thoại: trang chữ trải 2 trang và ảnh ngang gộp lại thành 1 trang
-  pages = P.map((p, i) => ({ p, i })).filter(x => !(single && (x.p.k === 'ws' || x.p.k === 'span') && x.p.s === 'R'));
+  // xem từng trang: bỏ trang trắng sau bìa và bìa sau (dừng ở trang tên cuối)
+  pages = P.map((p, i) => ({ p, i })).filter(x => !(single && (x.p.k === 'blank' || x.p.k === 'backc')));
   // phủ kín màn hình: mỗi trang = nửa bề ngang, cao bằng màn hình
-  const W = rot ? innerHeight : innerWidth, H = rot ? innerWidth : innerHeight;
-  const ph = Math.floor((H - 70) * 0.9), pw = Math.floor(Math.min(W * 0.44, ph * 0.86));  // sách nằm giữa có lề, chừa chỗ thấy gáy giấy + bóng đổ
+  const W = innerWidth, H = innerHeight;
+  let ph = Math.floor((H - 70) * 0.9), pw = Math.floor(ph * 1.5);  // Hailee 25/11: mỗi trang ngang 3:2 như ref Heyzine; sách nằm giữa có lề, chừa chỗ thấy gáy giấy + bóng đổ
+  if (pw > W * 0.46) { pw = Math.floor(W * 0.46); ph = Math.floor(pw / 1.5); }
+  if (single) { ph = Math.floor(H - 56 - 24); pw = Math.floor(ph * 9 / 16); if (pw > W - 24) { pw = Math.floor(W - 24); ph = Math.floor(pw * 16 / 9); } }  // trang dọc 9:16
   document.documentElement.style.setProperty('--pw', pw + 'px');
   document.documentElement.style.setProperty('--ph', ph + 'px');
   T = Math.max(8, Math.round(Math.min(W, H) / 52));
@@ -341,7 +391,7 @@ function jumpToPhoto(n) {
 $('#prev').onclick = () => go(-1); $('#next').onclick = () => go(1);
 // kéo chuột / vuốt: trang giấy đi theo tay, thả quá 1/3 hoặc vuốt nhanh thì lật hẳn, không thì bật về
 let swiped = false, drag = null;
-const ax = e => rot ? e.clientY : e.clientX, ay = e => rot ? innerWidth - e.clientX : e.clientY;
+const ax = e => e.clientX, ay = e => e.clientY;
 const pwNow = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pw'));
 stage.addEventListener('pointerdown', e => {
   if (busy || e.button > 0 || e.target.closest('a,button') || lb.classList.contains('on')) return;
@@ -396,7 +446,7 @@ book.addEventListener('click', e => {
     pic.classList.remove('act'); openLb(+pic.dataset.n); return;
   }
   book.querySelectorAll('.ph.act').forEach(x => x.classList.remove('act'));
-  const W = rot ? innerHeight : innerWidth;
+  const W = innerWidth;
   go(ax(e) < W / 2 ? -1 : 1);
 });
 const lb = $('#lb'), lbI = $('#lbI');
@@ -445,8 +495,6 @@ addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { con
 const h = parseInt(location.hash.slice(1), 10);
 build();
 if (h >= 1 && h <= N) jumpToPhoto(h);
-if (rot) { $('#turn').classList.add('on'); setTimeout(() => $('#turn').classList.remove('on'), 2600); }
-$('#turn').addEventListener('click', () => $('#turn').classList.remove('on'));
 })();
 </script>
 </body>
