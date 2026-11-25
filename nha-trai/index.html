@@ -78,6 +78,12 @@ button{font:inherit}
 .intro .fade{position:absolute;inset:0;background:#0b0101;pointer-events:none}
 .skip{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));min-height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(242,236,225,.3);background:transparent;color:rgba(242,236,225,.75);font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;z-index:3}
 .skip:hover{background:rgba(242,236,225,.1)}
+/* Hailee 25/11: phong bì nằm chờ, khách chạm mới mở (để nhạc phát đúng lúc mở thiệp trên điện thoại) */
+.itap{position:absolute;left:0;right:0;bottom:calc(17vh + env(safe-area-inset-bottom,0px));margin:0;text-align:center;font-family:var(--display);font-style:italic;font-weight:500;font-size:19px;letter-spacing:.06em;color:rgba(242,236,225,.88);opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s;pointer-events:none;z-index:3}
+.itap.on{opacity:1;visibility:visible;animation:itapP 2.4s ease-in-out .6s infinite}
+@keyframes itapP{50%{opacity:.45}}
+.intro.gate{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.itap.on{animation:none}}
 
 
 /* ============ STAGE: thiệp tự vẽ khi cuộn ============ */
@@ -830,6 +836,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
   </div></div></div>
   <div class="glow" id="glow"></div><div class="vig" id="vig"></div><div class="fade" id="ifade"></div>
   <button class="skip" id="skip" type="button">Bỏ qua</button>
+  <p class="itap" id="itap" aria-live="polite">Chạm để mở thiệp</p>
 </div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1821,13 +1828,25 @@ else {
     .add(startFollow, 5.72)
     .to('#eBack > :not(#eCard), #shA, #shC', { opacity: 0, duration: .4, ease: 'power1.inOut' }, 5.3)
     .to('#skip', { opacity: 0, duration: .3 }, 5.4);
+  // Hailee 25/11: phong bì hiện ra rồi nằm chờ; khách chạm/bấm mới lật mở, nhạc to dần cùng lúc (cú chạm cho phép phát nhạc trên điện thoại)
+  const itap = $('#itap'); let opened = false, gated = false;
+  if (matchMedia('(hover:hover) and (pointer:fine)').matches) itap.textContent = 'Bấm để mở thiệp';
+  const openEnv = () => {
+    if (opened) return; opened = performance.now();
+    if (window.__bgmStart) window.__bgmStart();
+    itap.classList.remove('on'); introEl.classList.remove('gate');
+    if (gated) { gated = false; tl.play(); }
+  };
+  tl.add(() => { if (opened) return; tl.pause(); gated = true; itap.classList.add('on'); introEl.classList.add('gate'); }, 1.7);
+  introEl.addEventListener('click', e => { if (!e.target.closest('#skip')) openEnv(); });
   const go = () => { ScrollTrigger.refresh(); requestAnimationFrame(() => requestAnimationFrame(() => tl.play())); };
   const ready = Promise.all([document.readyState === 'complete' ? 1 : new Promise(r => addEventListener('load', r, { once: true })), Promise.race([document.fonts ? document.fonts.ready : 1, new Promise(r => setTimeout(r, 800))])]);
   ready.then(() => (window.requestIdleCallback ? new Promise(r => requestIdleCallback(r, { timeout: 400 })) : 1)).then(go);
-  const skip = () => { if (tl.progress() < 1) tl.timeScale(5); };
-  $('#skip').addEventListener('click', skip);
-  addEventListener('wheel', skip, { passive: true, once: true });
-  addEventListener('touchmove', skip, { passive: true, once: true });
+  const fast = () => { openEnv(); if (tl.progress() < 1) tl.timeScale(5); };
+  const skip = () => { if (!opened) openEnv(); else if (performance.now() - opened > 800) fast(); };  // phong bì đang chờ: vuốt/cuộn = mở bình thường; đang mở rồi mới tua nhanh
+  $('#skip').addEventListener('click', fast);
+  addEventListener('wheel', skip, { passive: true });
+  addEventListener('touchmove', skip, { passive: true });
   addEventListener('keydown', e => { if (['ArrowDown', 'PageDown', ' ', 'Escape', 'Enter'].includes(e.key)) skip(); });
 }
 })();
@@ -1864,6 +1883,48 @@ else {
   let gx = null; g.addEventListener('pointerdown', e => { gx = e.clientX; }); g.addEventListener('pointerup', e => { if (gx === null) return; const dx = e.clientX - gx; gx = null; if (Math.abs(dx) > 50) show(v + (dx < 0 ? 1 : -1)); });
 })();
 </script>
-
+<!--NHAC-->
+<!-- nhạc nền (Hailee 25/11): nút loa góc dưới phải; nhạc bắt đầu ở lần chạm/bấm đầu tiên (trình duyệt cấm tự phát có tiếng), nhỏ dần khi bật/tắt, dừng khi khách rời tab. Không có file nhạc thì build bỏ cả khối này. -->
+<style>
+.bgm{position:fixed;right:var(--gut,20px);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:45;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid rgba(242,236,225,.55);background:rgba(40,8,10,.38);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#f2ece1;display:grid;place-items:center;cursor:pointer;transition:background .3s,transform .3s}
+.bgm:hover{background:rgba(40,8,10,.6)}.bgm:active{transform:scale(.94)}
+.bgm svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.bgm .sp{fill:currentColor;stroke:none}
+.bgm .wv{display:none}.bgm.on .wv{display:inline}.bgm.on .x{display:none}
+.bgm.on .wv path{animation:bgmW 1.8s ease-in-out infinite}.bgm.on .wv path+path{animation-delay:.3s}
+@keyframes bgmW{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.bgm.on .wv path{animation:none}}
+</style>
+<button class="bgm" id="bgm" type="button" aria-label="Bật nhạc" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="sp" d="M4 9.5h3.2L12 5.6v12.8l-4.8-3.9H4z"/><g class="wv"><path d="M15.2 9.2a4 4 0 0 1 0 5.6"/><path d="M17.8 6.8a7.4 7.4 0 0 1 0 10.4"/></g><g class="x"><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></g></svg></button>
+<audio id="bgmA" src="nhac.mp3" loop preload="none"></audio>
+<script>
+(function(){
+  const b = document.getElementById('bgm'), a = document.getElementById('bgmA'); if (!b || !a) return;
+  let want = true, fade;
+  try { if (localStorage.getItem('bgm') === 'off') want = false; } catch (e) {}
+  const ui = on => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Tắt nhạc' : 'Bật nhạc'); };
+  // iPhone bỏ qua a.volume → nhỏ/to dần bằng Web Audio (chỉ khi chạy trên web; mở file:// thì Web Audio ra câm nên dùng volume)
+  let ctx = null, gain = null;
+  const setup = () => { if (ctx || !/^http/.test(location.protocol)) return; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; try { ctx = new AC(); gain = ctx.createGain(); gain.gain.value = 0; ctx.createMediaElementSource(a).connect(gain).connect(ctx.destination); } catch (e) { ctx = gain = null; } };
+  const ramp = (to, ms, done) => {
+    clearInterval(fade);
+    if (gain) { const g = gain.gain, t = ctx.currentTime; g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(to, t + ms / 1000); if (done) setTimeout(done, ms); return; }
+    const from = a.volume, t0 = performance.now(); fade = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / ms); a.volume = from + (to - from) * k; if (k >= 1) { clearInterval(fade); if (done) done(); } }, 40);
+  };
+  const play = () => { setup(); if (ctx && ctx.state === 'suspended') ctx.resume(); if (gain) gain.gain.value = 0; else a.volume = 0; const p = a.play(); ui(true); if (p) p.then(() => ramp(.7, 3000)).catch(() => ui(false)); };  // Hailee 25/11: nhạc to dần (3 giây)
+  const stop = () => { ui(false); ramp(0, 450, () => a.pause()); };
+  const save = () => { try { localStorage.setItem('bgm', want ? 'on' : 'off'); } catch (e) {} };
+  const EV = ['pointerdown', 'touchend', 'keydown', 'click'];
+  const first = e => { EV.forEach(t => removeEventListener(t, first, true)); if (e.target.closest && e.target.closest('#bgm')) return; if (want && a.paused) play(); };
+  EV.forEach(t => addEventListener(t, first, true));
+  // Hailee 25/11: nhạc to dần từ lúc thiệp bắt đầu mở; máy chặn tự phát (điện thoại) thì chờ lần chạm đầu tiên như trên
+  const start = () => { if (want && a.paused) { a.preload = 'auto'; play(); } };
+  window.__bgmStart = start;
+  if (!document.documentElement.classList.contains('intro-on')) { if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true }); }
+  b.addEventListener('click', () => { if (b.classList.contains('on')) { want = false; stop(); } else { want = true; play(); } save(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { if (!a.paused) { a.pause(); a.dataset.r = 1; } } else if (a.dataset.r) { delete a.dataset.r; a.play().catch(() => {}); } });
+})();
+</script>
+<!--/NHAC-->
 </body>
 </html>
