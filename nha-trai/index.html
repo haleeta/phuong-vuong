@@ -765,7 +765,7 @@ body{counter-reset:sec;-webkit-font-smoothing:antialiased}
             <span style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:72px;line-height:1;letter-spacing:10px">DATE</span>
           </div>
           <div style="position:absolute;left:0;right:0;top:400px;display:flex;justify-content:center"><div style="padding:0 18px 2px;border-bottom:1px solid #f2ece1;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:44px;line-height:1.1">12.12.2026</div></div>
-          <div style="position:absolute;left:0;right:0;top:470px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px;opacity:.85">Mai Phương &amp; Quốc Vương</div>
+          <div style="position:absolute;left:0;right:0;top:470px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px;opacity:.85">Quốc Vương &amp; Mai Phương</div>
           <div style="position:absolute;left:0;right:0;top:572px;display:flex;justify-content:center;align-items:baseline;gap:8px;font-size:17px;letter-spacing:.3px"><span>Trân trọng kính mời Quý Khách</span></div>
         </div>
         <i class="lightfx"></i><i class="edgefx"></i><i class="sheen" id="sheenF"></i><i class="shade" id="shadeF"></i>
@@ -1477,7 +1477,7 @@ form.addEventListener('submit', e => {
   $('#dSum').textContent = yes ? 'Hân hạnh tham dự · ' + (comp ? 'cùng ' + (cnt.value === '5' ? '5+' : comp) + ' người' : 'một mình') : 'Rất tiếc không thể đến, xin gửi lời chúc phúc';
   $('#dAtRow').hidden = !yes;
   // gửi hồi âm vào Google Sheet (Apps Script web app, URL ở rsvp-hook.txt)
-  const HOOK = '__RSVP_HOOK__';
+  const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
   if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({ side: 'Nhà trai', name, go: yes ? 'Tham dự' : 'Không đến', comp: yes ? (cnt.value === '5' ? '5+' : String(comp)) : '', total: yes ? (cnt.value === '5' ? '6+' : String(n)) : '', wish }) }).catch(() => {});
   const open = () => { form.hidden = true; done.hidden = false; if (window.ScrollTrigger) ScrollTrigger.refresh(); bow(); };
@@ -1519,7 +1519,7 @@ $$('textarea[data-maxw]').forEach(t => {
     e.preventDefault();
     const nm = wf.wname.value.trim(), msg = wf.wmsg.value.trim();
     if (!msg) { wf.wmsg.focus(); return; }
-    const HOOK = '__RSVP_HOOK__';
+    const HOOK = 'https://script.google.com/macros/s/AKfycbwwpbqsmSL1J3XkRZN7KV5adq_jF-NwChec_gdR83PK29chKQX9WnEWbjOQWaFuqWpw/exec';
     if (/^https:\/\/script\.google\.com\//.test(HOOK)) fetch(HOOK, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ side: 'Nhà trai', name: nm || '(không ghi tên)', go: 'Lời chúc', comp: '', total: '', wish: msg }) }).catch(() => {});
     const btn = wf.querySelector('button'), thx = $('#wthx');
