@@ -31,7 +31,7 @@ a{color:inherit}
 .top{color:var(--ink);z-index:20;pointer-events:none}.top a,.top button{pointer-events:auto;color:#f2ece1;font:400 9px var(--mono);letter-spacing:.22em;text-transform:uppercase;padding:10px 2px;border:0}
 .top a:hover,.top button:hover{opacity:.7;text-decoration:none}
 .top .nm{display:none}
-.bot{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;height:38px;padding:0 4px;background:#f6f1e7;border-radius:999px;box-shadow:0 8px 22px -10px rgba(61,8,8,.55);display:flex;align-items:center;justify-content:center;gap:22px;z-index:20}
+.bot{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;height:38px;padding:0 4px;background:#f6f1e7;border-radius:999px;box-shadow:0 8px 22px -10px rgba(61,8,8,.55);display:flex;align-items:center;justify-content:center;gap:6px;z-index:20}
 .arr{width:34px;height:34px;border:0;border-radius:50%;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,opacity .2s}
 .arr:hover:not(:disabled){background:rgba(110,26,31,.1);color:var(--ink)}
 .arr:disabled{opacity:.2;cursor:default}
@@ -166,10 +166,12 @@ a{color:inherit}
 .zv{display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(var(--zw) * 2),1fr));gap:34px 28px;--zw:clamp(130px,16vw,230px)}
 .zv[hidden],.idx .g[hidden]{display:none}
 .zv .sp{display:flex;justify-content:center;cursor:pointer}
-.zv .zp{position:relative;width:var(--zw);aspect-ratio:var(--za,.75);container-type:size;background:var(--paper);overflow:hidden;box-shadow:0 10px 22px -14px rgba(40,10,10,.5)}
+.zv .zp{position:relative;width:var(--zw);height:calc(var(--zw) / var(--za,.75));overflow:hidden;box-shadow:0 10px 22px -14px rgba(40,10,10,.5)}
+/* trang dựng đúng cỡ thật rồi thu nhỏ cả trang, để chữ và ảnh giữ đúng tỉ lệ (Hailee 25/11: bìa thu nhỏ bị sai tỉ lệ) */
+.zv .zi{position:absolute;left:0;top:0;width:var(--pw);height:var(--ph);transform:scale(var(--zs,.3));transform-origin:0 0;container-type:size;background:var(--paper);overflow:hidden}
 .zv .zp.e{background:none;box-shadow:none}
-.zv .zp.b{background-image:linear-gradient(270deg,rgba(0,0,0,.10),transparent 8%)}.zv .zp.f{background-image:linear-gradient(90deg,rgba(0,0,0,.10),transparent 8%)}
-.zv .zp.cover{background:#f6f1e7}
+.zv .zp.b .zi{background-image:linear-gradient(270deg,rgba(0,0,0,.10),transparent 8%)}.zv .zp.f .zi{background-image:linear-gradient(90deg,rgba(0,0,0,.10),transparent 8%)}
+.zv .zi.cover,.zv .zi.backc{background:#f6f1e7}
 .zv .sp:hover .zp:not(.e){box-shadow:0 14px 28px -12px rgba(40,10,10,.6)}
 .zv .zp img{opacity:1}
 .idx .x{position:fixed;top:14px;right:clamp(12px,3vw,30px);width:48px;height:48px;font-size:30px;line-height:1;color:var(--ink)}
@@ -189,7 +191,6 @@ a{color:inherit}
 
 <nav class="bot">
   <button class="arr" id="prev" type="button" aria-label="Trang trước"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
-  <span class="cnt" id="cnt" aria-live="polite">Bìa</span>
   <button class="arr" id="next" type="button" aria-label="Trang sau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
 </nav>
 <div class="lb" id="lb" role="dialog" aria-label="Xem ảnh lớn"><button class="x" type="button" id="lbX" aria-label="Đóng">✕</button><button class="pv" type="button" id="lbP" aria-label="Ảnh trước">‹</button><img id="lbI" alt=""><button class="nx" type="button" id="lbN" aria-label="Ảnh sau">›</button><span class="c" id="lbC"></span></div>
@@ -296,13 +297,13 @@ function render(instant) {
   book.style.transform = single ? '' : cur === 0 ? 'translateX(' + (-pw / 2) + 'px)' : cur === L ? 'translateX(' + (pw / 2) + 'px)' : '';
   if (instant) requestAnimationFrame(() => requestAnimationFrame(() => book.classList.remove('noanim')));
   const ns = vis().flatMap(i => pages[i] ? pages[i].p.n : []);
-  $('#cnt').textContent = cur === 0 ? 'Bìa' : cur === L ? 'Hết' : ns.length ? pad(ns[0]) + ' / ' + pad(N) : '·';
-  $('#prev').disabled = cur === 0; $('#next').disabled = cur === L;
+  $('#prev').disabled = cur === 0; $('#next').disabled = cur >= L - 1;  // Hailee 25/11: dừng ở trang cuối, không lật sang bìa sau (trông như về trang đầu)
   lazy();
   if (cur > 0 && ns.length) history.replaceState(null, '', '#' + pad(ns[0])); else history.replaceState(null, '', location.pathname);
 }
 // mỗi khung ảnh: phóng để cô dâu chú rể cao ~2/3 khung, đặt hai người giữa khung (Hailee 25/11); khung đổi cỡ (rê chuột, đổi màn) thì tính lại
 const ZOOM = new Set([10, 11, 12, 13]);
+const ZX = {13: 1.18};  // Hailee 25/11: ảnh 13 cô dâu sát mép trái gốc → phóng thêm, giữ mép trái, bớt bụi cây bên phải cho hai bên cân
 function fit(ph) {
   const im = ph.querySelector('img'); if (!im || !im.naturalWidth) return;
   const W = ph.clientWidth, H = ph.clientHeight; if (!W || !H) return;
@@ -311,6 +312,7 @@ function fit(ph) {
   const cover = Math.max(H, W / r);
   let h = cover;
   if (b && b[3] - b[1] < 0.6) h = Math.max(cover, Math.min(cover * 2.2, (H * 2 / 3) / (b[3] - b[1])));  // chỉ phóng ảnh người đứng nhỏ trong khung (bộ ảnh vườn)
+  h *= ZX[n] || 1;  // phóng thêm riêng từng ảnh
   const w = h * r, cx = (FX[n] ?? 50) / 100, cy = FOCUS[n] / 100;
   const L = Math.min(0, Math.max(W - w, W / 2 - cx * w)), T = Math.min(0, Math.max(H - h, H * 0.36 - cy * h));  // mặt cô dâu chú rể ở khoảng 1/3 trên khung, không bao giờ cắt mặt
   Object.assign(im.style, { position: 'absolute', maxWidth: 'none', objectFit: 'fill', width: w + 'px', height: h + 'px', left: L + 'px', top: T + 'px', transformOrigin: (cx * 100) + '% ' + (cy * 100) + '%' });
@@ -324,7 +326,7 @@ function lazy() {
   });
 }
 function go(d) {
-  const n = cur + d; if (busy || n < 0 || n > leaves.length) return;
+  const n = cur + d; if (busy || n < 0 || n > leaves.length - 1) return;
   const lf = leaves[d > 0 ? cur : cur - 1];
   busy = true; lf.classList.add('turning');
   cur = n; render(false); lf.style.zIndex = 999;
@@ -351,7 +353,7 @@ stage.addEventListener('pointermove', e => {
   if (!drag.dir) {
     if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy)) return;
     const dir = dx < 0 ? 1 : -1, n = cur + dir;
-    if (n < 0 || n > leaves.length) { drag = null; return; }
+    if (n < 0 || n > leaves.length - 1) { drag = null; return; }
     drag.dir = dir; drag.leaf = leaves[dir > 0 ? cur : cur - 1];
     drag.leaf.style.transition = 'none'; drag.leaf.style.zIndex = 999; drag.leaf.classList.add('turning');
     try { stage.setPointerCapture(drag.id); } catch (_) {}
@@ -417,13 +419,14 @@ addEventListener('keydown', e => {
 const grid = $('#grid');
 grid.innerHTML = Array.from({ length: N }, (_, i) => '<button type="button" data-n="' + (i + 1) + '"' + (BW.has(i + 1) ? ' style="filter:grayscale(1)"' : '') + '><img loading="lazy" src="nho/' + pad(i + 1) + '.jpg" alt="Ảnh ' + (i + 1) + '"><span>No. ' + pad(i + 1) + '</span></button>').join('');
 function buildZine() {
-  const z = $('#zv'), pw = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pw')), phh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ph'));
-  z.style.setProperty('--za', (pw / phh).toFixed(4));
-  const L = leaves.length, pg = i => pages[i] ? html(pages[i].p, pages[i].i) : null, out = [];
-  for (let c = 0; c <= L; c++) {
-    const l = c > 0 ? pg(c * 2 - 1) : null, r = c < L ? pg(c * 2) : null;
-    out.push('<div class="sp" data-c="' + c + '" role="button" tabindex="0" aria-label="Mở cặp trang ' + c + '">' + (l ? '<div class="zp b ' + l.c + '">' + l.h + '</div>' : '<div class="zp e"></div>') + (r ? '<div class="zp f ' + r.c + '">' + r.h + '</div>' : '<div class="zp e"></div>') + '</div>');
-  }
+  const z = $('#zv'), cs = getComputedStyle(document.documentElement), pw = parseFloat(cs.getPropertyValue('--pw')), phh = parseFloat(cs.getPropertyValue('--ph'));
+  const zw = Math.max(130, Math.min(230, innerWidth * .16));
+  z.style.setProperty('--zw', zw + 'px'); z.style.setProperty('--za', (pw / phh).toFixed(4)); z.style.setProperty('--zs', (zw / pw).toFixed(4));
+  const L = leaves.length, pg = i => pages[i] ? html(pages[i].p, pages[i].i) : null;
+  const page = (x, side) => x ? '<div class="zp ' + side + '"><div class="zi ' + side + ' ' + x.c + '">' + x.h + '</div></div>' : '<div class="zp e"></div>';
+  // cặp đầu = bìa sau (trái) + bìa trước (phải) như quyển sách mở phẳng; sau đó là các cặp trang trong
+  const out = ['<div class="sp" data-c="0" role="button" tabindex="0" aria-label="Bìa">' + page(pg(pages.length - 1), 'b') + page(pg(0), 'f') + '</div>'];
+  for (let c = 1; c < L; c++) out.push('<div class="sp" data-c="' + c + '" role="button" tabindex="0" aria-label="Cặp trang ' + c + '">' + page(pg(c * 2 - 1), 'b') + page(pg(c * 2), 'f') + '</div>');
   z.innerHTML = out.join('');
   z.querySelectorAll('img[data-src]').forEach(im => { const ph = im.closest('.ph'); im.loading = 'lazy'; im.onload = () => { im.classList.add('ok'); fit(ph); }; ro.observe(ph); im.src = im.dataset.src; im.removeAttribute('data-src'); });
 }
