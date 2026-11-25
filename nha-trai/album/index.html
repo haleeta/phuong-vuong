@@ -183,11 +183,12 @@ body:not(.single) .seq .pn{top:12.5cqh}body:not(.single) .seq .m{top:79cqh}
 body:not(.single) .half .ph{top:0;bottom:0;height:auto;width:66.7cqh}
 body:not(.single) .half.f .ph{left:0;right:auto}body:not(.single) .half.b .ph{right:0;left:auto}
 body:not(.single) .half.f .vt{right:3.5cqw}body:not(.single) .half.b .vt{left:3.5cqw;right:auto}
-body:not(.single) .topm .ph{top:9cqh;height:76cqh;width:50.7cqh}
+/* Hailee 25/11: ảnh 9 là ảnh ngang duy nhất, khung dọc lẹm mặt → 2 trang topm đối nhau dùng khung ngang 1.6 như bản cũ */
+body:not(.single) .topm .ph{top:12cqh;height:60cqh;width:96cqh}
 body:not(.single) .topm.b .ph{left:7cqw;right:auto}body:not(.single) .topm.f .ph{right:7cqw;left:auto}
-body:not(.single) .topm .pn{top:auto;bottom:19cqh}body:not(.single) .topm .m{top:auto;bottom:15cqh}
-body:not(.single) .topm.b .pn,body:not(.single) .topm.b .m{left:calc(7cqw + 50.7cqh + 3cqw)}
-body:not(.single) .topm.f .pn,body:not(.single) .topm.f .m{right:calc(7cqw + 50.7cqh + 3cqw);left:auto;text-align:right}
+body:not(.single) .topm .pn{top:75cqh}body:not(.single) .topm .m{top:79cqh}
+body:not(.single) .topm.b .pn,body:not(.single) .topm.b .m{left:7cqw}
+body:not(.single) .topm.f .pn,body:not(.single) .topm.f .m{right:7cqw;left:auto;text-align:right}
 body:not(.single) .duo .row{left:0;right:0;top:11cqh;height:74cqh;justify-content:center;gap:3cqw}
 body:not(.single) .duo .p1{flex:none;width:26cqh;height:52%}body:not(.single) .duo .p2{flex:none;width:49.3cqh;height:100%}
 @media (hover:hover){body:not(.single) .duo .p1:hover{flex-grow:0;height:60%}body:not(.single) .duo .p2:hover{flex-grow:0}}
@@ -211,6 +212,9 @@ body:not(.single) .end{--ec:47cqh}
 .single .half .ph{height:64cqh}
 .single .topm .ph{left:7cqw;right:7cqw;top:8cqh;height:129cqw}
 .single .topm .pn{top:calc(8cqh + 129cqw + 2.5cqh)}.single .topm .m{top:calc(8cqh + 129cqw + 5.5cqh)}
+/* ảnh ngang (ảnh 9): khung ngang 1.6, không lẹm mặt */
+.single .topm.wide .ph{top:24cqh;height:54cqw}
+.single .topm.wide .pn{top:calc(24cqh + 54cqw + 2.5cqh)}.single .topm.wide .m{top:calc(24cqh + 54cqw + 5.5cqh)}
 .single .row .ph{min-width:0}
 .single .duo .row{left:7cqw;right:7cqw;top:26cqh;height:84cqw}
 .single .duo .m{top:calc(26cqh + 84cqw + 2.5cqh)}
@@ -271,7 +275,7 @@ function html(p, i) {
     case 'title': return { c: 'title', h: '<div class="t">Mùa đông năm ấy<br>mình nên duyên</div><div class="d">12 · 12 · 2026</div>' };  // Hailee 25/11: chữ trang đầu
     case 'seq': return { c: 'seq', h: pn + '<div class="strip">' + n.map(x => ph(x)).join('') + '</div><span class="m">' + nos(n) + '</span>' };
     case 'half': return { c: 'half', h: ph(n[0], '', p.o ? '' : '') };
-    case 'topm': return { c: 'topm', h: ph(n[0]) + pn + '<span class="m">' + nos(n) + '</span>' };
+    case 'topm': return { c: 'topm' + (p.w ? ' wide' : ''), h: ph(n[0]) + pn + '<span class="m">' + nos(n) + '</span>' };
     case 'duo': return { c: 'duo', h: '<div class="row">' + ph(n[0], 'p1') + ph(n[1], 'p2') + '</div>' + '<span class="m">' + nos(n) + '</span>' };
     case 'bleed': return { c: 'bleed', h: ph(n[0]) };
     case 'two': return { c: 'two', h: '<div class="row">' + ph(n[0], 'p1') + ph(n[1], 'p2') + '</div>' + '<span class="m">' + nos(n) + '</span>' };
