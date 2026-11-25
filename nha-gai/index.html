@@ -229,6 +229,9 @@ button{font:inherit}
 .album .more{display:flex;align-items:center;gap:10px;background:var(--wine);color:var(--paper);border-color:var(--wine)}
 .album .more:hover{background:#4e0b0b;border-color:#4e0b0b;color:var(--paper)}
 .album .more svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round}
+/* Hailee 25/11: nút tràn mép phải trên điện thoại 375px → không rộng quá khung, màn hẹp bớt đệm + giãn chữ cho vừa 1 dòng, cân giữa */
+.album .more{max-width:100%;box-sizing:border-box;justify-content:center}
+@media (max-width:440px){.album .more{padding:14px 18px;letter-spacing:.12em;font-size:12px;gap:8px}}
 @media (max-width:640px){.strip{--w:34vw}}
 /* bản nhà trai: xem trước các trang zine (trang đôi ngang 3:2) */
 .strip.ls{--w:clamp(210px,22vw,320px)}.strip.ls a{aspect-ratio:3/2}.strip.ls .trk{height:calc(var(--W) / 1.5)}
@@ -1859,5 +1862,6 @@ else {
   let gx = null; g.addEventListener('pointerdown', e => { gx = e.clientX; }); g.addEventListener('pointerup', e => { if (gx === null) return; const dx = e.clientX - gx; gx = null; if (Math.abs(dx) > 50) show(v + (dx < 0 ? 1 : -1)); });
 })();
 </script>
+
 </body>
 </html>
